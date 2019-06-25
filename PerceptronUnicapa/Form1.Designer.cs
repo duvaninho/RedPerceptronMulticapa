@@ -151,7 +151,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1582, 873);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
+            this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabControl1_MouseDown);
             // 
             // tabPage1
             // 
@@ -332,7 +332,7 @@
             this.btnContinuar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnContinuar.Textcolor = System.Drawing.Color.White;
             this.btnContinuar.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnContinuar.Click += new System.EventHandler(this.btnContinuar_Click);
+            this.btnContinuar.Click += new System.EventHandler(this.BtnContinuar_Click);
             // 
             // btnEntrenar
             // 
@@ -369,7 +369,7 @@
             this.btnEntrenar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnEntrenar.Textcolor = System.Drawing.Color.White;
             this.btnEntrenar.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEntrenar.Click += new System.EventHandler(this.btnEntrenar_Click);
+            this.btnEntrenar.Click += new System.EventHandler(this.BtnEntrenar_Click);
             // 
             // panel8
             // 
@@ -413,7 +413,7 @@
             this.dgvTopologiaRed.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dgvTopologiaRed.Size = new System.Drawing.Size(255, 166);
             this.dgvTopologiaRed.TabIndex = 4;
-            this.dgvTopologiaRed.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvTopologiaRed_EditingControlShowing);
+            this.dgvTopologiaRed.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.DgvTopologiaRed_EditingControlShowing);
             // 
             // Capa
             // 
@@ -570,7 +570,7 @@
             this.btnNuevo.Size = new System.Drawing.Size(253, 68);
             this.btnNuevo.TabIndex = 3;
             this.btnNuevo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
+            this.btnNuevo.Click += new System.EventHandler(this.BtnNuevo_Click);
             // 
             // btnSimular
             // 
@@ -597,7 +597,7 @@
             this.btnSimular.Size = new System.Drawing.Size(253, 68);
             this.btnSimular.TabIndex = 2;
             this.btnSimular.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnSimular.Click += new System.EventHandler(this.btnSimular_Click);
+            this.btnSimular.Click += new System.EventHandler(this.BtnSimular_Click);
             // 
             // btnCargarPesosyUmbrales
             // 
@@ -624,7 +624,7 @@
             this.btnCargarPesosyUmbrales.Size = new System.Drawing.Size(253, 68);
             this.btnCargarPesosyUmbrales.TabIndex = 2;
             this.btnCargarPesosyUmbrales.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnCargarPesosyUmbrales.Click += new System.EventHandler(this.btnCargarPesosyUmbrales_Click);
+            this.btnCargarPesosyUmbrales.Click += new System.EventHandler(this.BtnCargarPesosyUmbrales_Click);
             // 
             // btnCargarPatrones
             // 
@@ -678,7 +678,7 @@
             this.btnInicializarRed.Size = new System.Drawing.Size(253, 68);
             this.btnInicializarRed.TabIndex = 1;
             this.btnInicializarRed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnInicializarRed.Click += new System.EventHandler(this.btnInicializarRed_Click);
+            this.btnInicializarRed.Click += new System.EventHandler(this.BtnInicializarRed_Click);
             // 
             // bunifuGradientPanel2
             // 
@@ -792,7 +792,7 @@
             this.label7.Size = new System.Drawing.Size(145, 25);
             this.label7.TabIndex = 14;
             this.label7.Text = "Rata Dinamica";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+            this.label7.Click += new System.EventHandler(this.Label7_Click);
             // 
             // btnBorrarLog
             // 
@@ -819,7 +819,7 @@
             this.btnBorrarLog.Size = new System.Drawing.Size(244, 41);
             this.btnBorrarLog.TabIndex = 4;
             this.btnBorrarLog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnBorrarLog.Click += new System.EventHandler(this.btnBorrarLog_Click);
+            this.btnBorrarLog.Click += new System.EventHandler(this.BtnBorrarLog_Click);
             // 
             // lblPatrones
             // 
@@ -867,7 +867,7 @@
             0,
             0,
             0});
-            this.nudNumeroCapas.ValueChanged += new System.EventHandler(this.nudNumeroCapas_ValueChanged);
+            this.nudNumeroCapas.ValueChanged += new System.EventHandler(this.NudNumeroCapas_ValueChanged);
             // 
             // label1
             // 

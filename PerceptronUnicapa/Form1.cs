@@ -63,7 +63,7 @@ namespace PerceptronUnicapa
 
         
 
-        private void btnInicializarRed_Click(object sender, EventArgs e)
+        private void BtnInicializarRed_Click(object sender, EventArgs e)
         {
             if (patrones == 0)
             {
@@ -90,7 +90,7 @@ namespace PerceptronUnicapa
                 for (int i = 0; i < numeroActivaciones; i++)
                 {
                     neuronasPorCapa[i] = Convert.ToInt32( dgvTopologiaRed[1, i].Value);
-                    activaciones[i] = comboBoxes[i].opcion;
+                    activaciones[i] = comboBoxes[i].Opcion;
                     
                 }                
                 Random random = new Random();
@@ -106,7 +106,7 @@ namespace PerceptronUnicapa
             }
         }
 
-        private void btnEntrenar_Click(object sender, EventArgs e)
+        private void BtnEntrenar_Click(object sender, EventArgs e)
         {
             if (patrones == 0)
             {
@@ -117,9 +117,9 @@ namespace PerceptronUnicapa
             {
                 foreach (var perceptron in perceptrons)
                 {
-                    if (perceptron.errorEntrenamiento < perceptron.errorMaximo)
+                    if (perceptron.ErrorEntrenamiento < perceptron.ErrorMaximo)
                     {
-                        MessageBox.Show("La red ha entrenado en la iteracion " + perceptron.iteracionesEntrenamiento,
+                        MessageBox.Show("La red ha entrenado en la iteracion " + perceptron.IteracionesEntrenamiento,
                             "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         //removerColumnasDataDrid(dgvPesosyUmbrales);
                         //dgvPesosyUmbrales.ColumnCount = cantidadEntradas + 1;
@@ -155,7 +155,7 @@ namespace PerceptronUnicapa
                     {
                         perceptron.Entrenar();
                         chartError.Series[0].Points.AddXY(
-                            perceptron.iteracionesEntrenamiento, perceptron.errorEntrenamiento);
+                            perceptron.IteracionesEntrenamiento, perceptron.ErrorEntrenamiento);
                         //int iteradorSeriePesos = 0;
                         //int iteradorSerieUmbral = 0;
                         //foreach (var neurona in perceptron.capas)
@@ -172,7 +172,7 @@ namespace PerceptronUnicapa
                         //        neurona.umbralSimulacion);
                         //    iteradorSerieUmbral++;
                         //}
-                        if (!perceptron.entrenando)
+                        if (!perceptron.Entrenando)
                         {
                             redEntrenada = true;
 
@@ -187,7 +187,7 @@ namespace PerceptronUnicapa
                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void removerColumnasDataDrid(DataGridView dataGridView)
+        private void RemoverColumnasDataDrid(DataGridView dataGridView)
         {
             if (dataGridView.Columns.Count >0)
             {
@@ -198,7 +198,7 @@ namespace PerceptronUnicapa
                 }
             }
         }
-        private void btnContinuar_Click(object sender, EventArgs e)
+        private void BtnContinuar_Click(object sender, EventArgs e)
         {
             if (patrones == 0)
             {
@@ -225,13 +225,13 @@ namespace PerceptronUnicapa
                 //string[] pesosyumbrales = new string[cantidadSalidas];
                 foreach (var perceptron in perceptrons)
                 {
-                    while (perceptron.entrenando && perceptron.iteracionesEntrenamiento <=
-                        perceptron.iteracionesRequeridas)
+                    while (perceptron.Entrenando && perceptron.IteracionesEntrenamiento <=
+                        perceptron.IteracionesRequeridas)
                     {
                         perceptron.Entrenar();
                         chartError.Series[0].Points.AddXY(
-                            perceptron.iteracionesEntrenamiento,
-                            perceptron.errorEntrenamiento);
+                            perceptron.IteracionesEntrenamiento,
+                            perceptron.ErrorEntrenamiento);
                         chartError.Update();
                         //chartUmbrales.Update();
                         //chartPesos.Update();
@@ -384,7 +384,7 @@ namespace PerceptronUnicapa
                 
             }
         }
-        private void btnSimular_Click(object sender, EventArgs e)
+        private void BtnSimular_Click(object sender, EventArgs e)
         {
         //    if (patrones == 0)
         //    {
@@ -452,7 +452,7 @@ namespace PerceptronUnicapa
 
         }
 
-        private void btnCargarPesosyUmbrales_Click(object sender, EventArgs e)
+        private void BtnCargarPesosyUmbrales_Click(object sender, EventArgs e)
         {
             //if (patrones == 0)
             //{
@@ -526,18 +526,18 @@ namespace PerceptronUnicapa
             //}
         }
 
-        private void btnBorrarLog_Click(object sender, EventArgs e)
+        private void BtnBorrarLog_Click(object sender, EventArgs e)
         {
             txtLog.Text = "";
         }
-        private void limpiarDataGrid(DataGridView dataGridView)
+        private void LimpiarDataGrid(DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();
             dataGridView.Refresh();
         }
-        private void nudNumeroCapas_ValueChanged(object sender, EventArgs e)
+        private void NudNumeroCapas_ValueChanged(object sender, EventArgs e)
         {
-            limpiarDataGrid(dgvTopologiaRed);
+            LimpiarDataGrid(dgvTopologiaRed);
             int k = 1;
             for (int i = 0; i < nudNumeroCapas.Value; i++)
             {
@@ -557,45 +557,44 @@ namespace PerceptronUnicapa
             }
         }
 
-        private void dgvTopologiaRed_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        private void DgvTopologiaRed_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            ComboBox combo = e.Control as ComboBox;
-            if (combo != null)
+            if (e.Control is ComboBox combo)
             {
-                
-                combo.SelectedIndexChanged -= new EventHandler(combo_SelectedIndexChange);
-                combo.SelectedIndexChanged += combo_SelectedIndexChange;
+
+                combo.SelectedIndexChanged -= new EventHandler(Combo_SelectedIndexChange);
+                combo.SelectedIndexChanged += Combo_SelectedIndexChange;
             }
 
         }
 
-        private void combo_SelectedIndexChange(object sender, EventArgs e)
+        private void Combo_SelectedIndexChange(object sender, EventArgs e)
         {
             string selectedIndex = (sender as ComboBox).SelectedIndex.ToString();
             int filaDataGrid = dgvTopologiaRed.CurrentCell.RowIndex;
-            ComboBoxes combo =  comboBoxes.Find(x => x.indiceDatagridView == filaDataGrid);
+            ComboBoxes combo =  comboBoxes.Find(x => x.IndiceDatagridView == filaDataGrid);
             if (combo != null)
             {
-                combo.opcion = Convert.ToInt16(selectedIndex);
+                combo.Opcion = Convert.ToInt16(selectedIndex);
                 //comboBoxes.Add(combo);
             }
             else
             {
                 combo = new ComboBoxes
                 {
-                    indiceDatagridView = filaDataGrid,
-                    opcion = Convert.ToInt16(selectedIndex)
+                    IndiceDatagridView = filaDataGrid,
+                    Opcion = Convert.ToInt16(selectedIndex)
                 };
                 comboBoxes.Add(combo);
             }            
         }
 
-        private void label7_Click(object sender, EventArgs e)
+        private void Label7_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void btnNuevo_Click(object sender, EventArgs e)
+        private void BtnNuevo_Click(object sender, EventArgs e)
         {
             perceptrons.Clear();
             comboBoxes.Clear();
@@ -611,9 +610,9 @@ namespace PerceptronUnicapa
             {
                 series.Points.Clear();
             }
-            limpiarDataGrid(dgvTopologiaRed);
-            limpiarDataGrid(dgvSimulacion);
-            limpiarDataGrid(dgvPesosyUmbrales);
+            LimpiarDataGrid(dgvTopologiaRed);
+            LimpiarDataGrid(dgvSimulacion);
+            LimpiarDataGrid(dgvPesosyUmbrales);
             //while (dgvPesosyUmbrales.RowCount > 1)
             //{
 
@@ -628,7 +627,7 @@ namespace PerceptronUnicapa
 
         }
 
-        private void tabControl1_MouseDown(object sender, MouseEventArgs e)
+        private void TabControl1_MouseDown(object sender, MouseEventArgs e)
         {
             //para poder arrastrar el formulario sin bordes
 
@@ -672,7 +671,7 @@ namespace PerceptronUnicapa
                 }
                 else
                 {
-                    removerColumnasDataDrid(dgvPatrones);
+                    RemoverColumnasDataDrid(dgvPatrones);
                     dgvPatrones.ColumnCount = headers.Length;
                     for (int i = 0; i < headers.Length; i++)
                     {
@@ -693,7 +692,7 @@ namespace PerceptronUnicapa
                     this.matrizEntradas = new double[patrones,cantidadEntradas];
                     this.matrizSalidas = new double[patrones, cantidadSalidas];
                     reader.Close();
-                    limpiarDataGrid(dgvPatrones);
+                    LimpiarDataGrid(dgvPatrones);
                 
 
                     foreach (string patron in datos)
@@ -750,9 +749,8 @@ namespace PerceptronUnicapa
     }
     public class ComboBoxes
     {
-        public int indiceDatagridView;
-        public int opcion;
-
+        public int Opcion { get; set; }
+        public int IndiceDatagridView { get; set; }
     }
 
 }

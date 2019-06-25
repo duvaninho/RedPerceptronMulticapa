@@ -7,39 +7,47 @@ namespace Utilidades
     {
         public double[,] SalidasDeseadas { get; set; }
         public double[,] Entradas { get; set; }
-        public double errorMaximo = 0.0,
-            errorEntrenamiento = 5, rataAprendizaje = 0.0;
-        public int patrones = 0, iteracionesEntrenamiento = 0,
-            iteracionesRequeridas, cantidadEntradas, cantidadSalidas;
-        public int[] funcionActivacion;
-        public List<Capa> capas;        
-        public bool entrenando, entrenada;
+
         public double[] MayoresEntradas { get; set; }
         public double[] MayoresSalidas { get; set; }
-        private readonly double[] erroresLinealUltimaCapa;
         public double RataDinamica { get; set; }
         public int AlgoritmoEntrenamiento { get; set; } //0 Regla Delta, 1 Backpropagation
+        public double ErrorMaximo { get; set; }
+        public double ErrorEntrenamiento { get; set; } = 5;
+        public double RataAprendizaje { get; set; } = 0.0;
+        public int Patrones { get; set; }
+        public int IteracionesEntrenamiento { get; set; }
+        public int IteracionesRequeridas { get; set; }
+        public int CantidadEntradas { get; set; }
+        public int CantidadSalidas { get; set; }
+        public int[] FuncionActivacion { get; set; }
+        public bool Entrenando { get; set; }
+        public List<Capa> Capas { get; set; }
+        public bool Entrenada { get; set; }
+
+        public double[] ErroresLinealUltimaCapa { get; }
+
         public Perceptron() { }
         public Perceptron(double[,] salidasDeseadas, double errorMaximo, int patrones,
             double rataAprendizaje, int iteracionesRequeridas, double[,] entradas,
             Random random, int[] funcionActivacion,int[] neuronasPorCapa, double rataDinamica = 0,
             int BackPropagation=0)
         {
-            if (errorEntrenamiento > errorMaximo)
+            if (ErrorEntrenamiento > errorMaximo)
             {
-                entrenando = true;
+                Entrenando = true;
             }
-            this.patrones = patrones;
-            cantidadEntradas = entradas.GetLength(1);
-            cantidadSalidas = salidasDeseadas.GetLength(1);
+            this.Patrones = patrones;
+            CantidadEntradas = entradas.GetLength(1);
+            CantidadSalidas = salidasDeseadas.GetLength(1);
             MapEntradas(entradas);
             MapSalidasDeseadas(salidasDeseadas);
-            this.errorMaximo = errorMaximo;
-            this.rataAprendizaje = rataAprendizaje;
-            this.iteracionesRequeridas = iteracionesRequeridas;
-            this.funcionActivacion = funcionActivacion;
-            creaCapas(this.Entradas.GetLength(1), neuronasPorCapa, random);
-            erroresLinealUltimaCapa = new double[cantidadSalidas];
+            this.ErrorMaximo = errorMaximo;
+            this.RataAprendizaje = rataAprendizaje;
+            this.IteracionesRequeridas = iteracionesRequeridas;
+            this.FuncionActivacion = funcionActivacion;
+            CreaCapas(this.Entradas.GetLength(1), neuronasPorCapa, random);
+            ErroresLinealUltimaCapa = new double[CantidadSalidas];
             this.RataDinamica = rataDinamica;
             MayoresEntradas = new double[Entradas.GetLength(1)];
             MayoresSalidas = new double[SalidasDeseadas.GetLength(1)];
@@ -97,71 +105,71 @@ namespace Utilidades
         }
         public void Entrenar()
         {
-            entrenando = true;
-            iteracionesEntrenamiento += 1;
-            Console.WriteLine("Iteracion: " + iteracionesEntrenamiento);
-            errorEntrenamiento = 0;
-            for (int i = 0; i < patrones; i++)
+            Entrenando = true;
+            IteracionesEntrenamiento += 1;
+            Console.WriteLine("Iteracion: " + IteracionesEntrenamiento);
+            ErrorEntrenamiento = 0;
+            for (int i = 0; i < Patrones; i++)
             {
                 double errorPorPatron = 0.0;                
                 Console.WriteLine("============================ Capa 0 ============================ ");
                 double[] patronDeEntrenamiento = ObtenerPatron(i);
-                capas[0].CalculaCapa(patronDeEntrenamiento);
-                for (int j = 1; j < capas.Count; j++)
+                Capas[0].CalculaCapa(patronDeEntrenamiento);
+                for (int j = 1; j < Capas.Count; j++)
                 {
                     Console.WriteLine("============================ Capa " + (j).ToString() + " ============================ ");
-                    capas[j].CalculaCapa(capas[j - 1].Salidas);                                        
+                    Capas[j].CalculaCapa(Capas[j - 1].Salidas);                                        
                 }
-                int ultimaCapa = capas.Count - 1;
-                errorPorPatron = GetErrorPatron(capas[ultimaCapa].Salidas, i);
-                errorPorPatron /= cantidadSalidas;
+                int ultimaCapa = Capas.Count - 1;
+                errorPorPatron = GetErrorPatron(Capas[ultimaCapa].Salidas, i);
+                errorPorPatron /= CantidadSalidas;
                 Console.WriteLine("Error Por Patron: " + errorPorPatron);
-                errorEntrenamiento += errorPorPatron;
+                ErrorEntrenamiento += errorPorPatron;
                 if (AlgoritmoEntrenamiento == 1)
                 {
                     CalcularErroresNoLineales();                    
                 }
                 ActulizarPesosUmbrales(errorPorPatron, patronDeEntrenamiento);
             }
-            errorEntrenamiento /= patrones;
-            RataDinamica /= iteracionesEntrenamiento;
+            ErrorEntrenamiento /= Patrones;
+            RataDinamica /= IteracionesEntrenamiento;
             //for(int i = 0;i < patrones; i++)
-            Console.WriteLine("Error de Entrenamiento: " + errorEntrenamiento);
+            Console.WriteLine("Error de Entrenamiento: " + ErrorEntrenamiento);
             //Prueba con error Entrenamiento
-            if (errorEntrenamiento < errorMaximo)
-                entrenando = false;
+            if (ErrorEntrenamiento < ErrorMaximo)
+                Entrenando = false;
         }
         private double GetErrorPatron(double[] salidasDeCapa,int indicePatron)
         {
             double errorPatron = 0.0;
             for (int i = 0; i < salidasDeCapa.Length; i++)
             {
-                erroresLinealUltimaCapa[i] = -salidasDeCapa[i] + SalidasDeseadas[indicePatron, i];
-                Console.WriteLine("Error Lienal[" + i + "]: " + erroresLinealUltimaCapa[i]);
-                errorPatron += Math.Abs(erroresLinealUltimaCapa[i]);
+                ErroresLinealUltimaCapa[i] = -salidasDeCapa[i] + SalidasDeseadas[indicePatron, i];
+                Console.WriteLine("Error Lienal[" + i + "]: " + ErroresLinealUltimaCapa[i]);
+                errorPatron += Math.Abs(ErroresLinealUltimaCapa[i]);
             }
-            capas[capas.Count - 1].ErroresLineales = erroresLinealUltimaCapa;
+            Capas[Capas.Count - 1].ErroresLineales = ErroresLinealUltimaCapa;
             return errorPatron;
         }
         private void ActulizarPesosUmbrales(double errorPatron, double[] patronDeEntrenamiento)
         {               
-            if (capas.Count == 1)
+            if (Capas.Count == 1)
             {
-                capas[0].ModificarPesos(patronDeEntrenamiento, rataAprendizaje, errorPatron, RataDinamica,AlgoritmoEntrenamiento);
+                Capas[0].ModificarPesos(patronDeEntrenamiento, RataAprendizaje, errorPatron, RataDinamica,AlgoritmoEntrenamiento);
             }
             else
             {
-                capas[0].ModificarPesos(patronDeEntrenamiento, rataAprendizaje, errorPatron, RataDinamica,AlgoritmoEntrenamiento);
-                for (int i = 1; i < capas.Count; i++)
+                Capas[0].ModificarPesos(patronDeEntrenamiento, RataAprendizaje, errorPatron, RataDinamica,AlgoritmoEntrenamiento);
+                for (int i = 1; i < Capas.Count; i++)
                 {                                    
-                    capas[i].ModificarPesos(capas[i - 1].Salidas, rataAprendizaje, errorPatron, RataDinamica,AlgoritmoEntrenamiento);                                                            
+                    Capas[i].ModificarPesos(Capas[i - 1].Salidas, RataAprendizaje, errorPatron, RataDinamica,AlgoritmoEntrenamiento);                                                            
                 }
             }
         }
 
         public double[] ObtenerPatron(int indice)
         {
-            double[] vector = new double[cantidadEntradas];
+            double[] vector = new double[CantidadEntradas];
             for (int i = 0; i < Entradas.GetLength(1); i++)
             {
                 vector[i] = Entradas[indice,i];
@@ -182,22 +190,22 @@ namespace Utilidades
         //    }
         //    return salidaSimulada;
         //}
-        public void creaCapas(int totalEntradasExternas, int[] NeuronasPorCapa, Random azar)
+        public void CreaCapas(int totalEntradasExternas, int[] NeuronasPorCapa, Random azar)
         {
-            capas = new List<Capa>();            
+            Capas = new List<Capa>();            
             for (int i = 0; i < NeuronasPorCapa.Length; i++)      
                 if(i == 0 && i == (NeuronasPorCapa.Length - 1))
-                    capas.Add(new Capa(NeuronasPorCapa[i], Entradas.GetLength(1),
-                        azar,2,funcionActivacion[i]));
+                    Capas.Add(new Capa(NeuronasPorCapa[i], Entradas.GetLength(1),
+                        azar,2,FuncionActivacion[i]));
                 else if(i==0)
-                    capas.Add(new Capa(NeuronasPorCapa[i], Entradas.GetLength(1),
-                        azar, 1, funcionActivacion[i]));
+                    Capas.Add(new Capa(NeuronasPorCapa[i], Entradas.GetLength(1),
+                        azar, 1, FuncionActivacion[i]));
                 else if(i == (NeuronasPorCapa.Length-1))
-                    capas.Add(new Capa(NeuronasPorCapa[i], NeuronasPorCapa[i - 1],
-                        azar, 2, funcionActivacion[i]));
+                    Capas.Add(new Capa(NeuronasPorCapa[i], NeuronasPorCapa[i - 1],
+                        azar, 2, FuncionActivacion[i]));
                 else
-                    capas.Add(new Capa(NeuronasPorCapa[i], NeuronasPorCapa[i - 1],
-                        azar,1, funcionActivacion[i]));
+                    Capas.Add(new Capa(NeuronasPorCapa[i], NeuronasPorCapa[i - 1],
+                        azar,1, FuncionActivacion[i]));
         }
 
         /////Metodos y funciones para la BackPropagation
@@ -205,11 +213,11 @@ namespace Utilidades
         {
             
                       
-            capas[capas.Count - 2].CalcularErroresNoLineales(capas[capas.Count-1].MatrizPesos,
-                capas[capas.Count - 1].ErroresLineales);
-            for (int i = capas.Count -3; i >= 0; i--)
+            Capas[Capas.Count - 2].CalcularErroresNoLineales(Capas[Capas.Count-1].MatrizPesos,
+                Capas[Capas.Count - 1].ErroresLineales);
+            for (int i = Capas.Count -3; i >= 0; i--)
             {
-                capas[i].CalcularErroresNoLineales(capas[i + 1].MatrizPesos, capas[i + 1].ErroresNoLineales);
+                Capas[i].CalcularErroresNoLineales(Capas[i + 1].MatrizPesos, Capas[i + 1].ErroresNoLineales);
             }
         }
     }

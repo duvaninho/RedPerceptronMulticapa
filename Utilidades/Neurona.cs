@@ -9,7 +9,19 @@ namespace Utilidades
     {
         public double Umbral { get; set; }       
         public double SalidaNeurona { get; set; }
-        public double[] PesosActuales { get; set; }
+
+        private double[] pesosActuales;
+
+        public double[] GetPesosActuales()
+        {
+            return pesosActuales;
+        }
+
+        public void SetPesosActuales(double[] value)
+        {
+            pesosActuales = value;
+        }
+
         public double UmbralActual { get; set; }
         public double ErrorLineal { get; set; }
         public double[] PesosAnteriores { get; set; }
@@ -23,7 +35,7 @@ namespace Utilidades
         public Neurona(Random random, int conexionesEntrada)
         {
             Pesos = new double[conexionesEntrada];
-            PesosActuales = new double[conexionesEntrada];
+            SetPesosActuales(new double[conexionesEntrada]);
             PesosAnteriores = new double[conexionesEntrada];
             for (int i = 0; i < Pesos.Length; i++)
             {
@@ -55,7 +67,12 @@ namespace Utilidades
         {
 
             double valor = CalcularSoma(entradas);
+            Activar(funcionActivacion, valor);
+            return SalidaNeurona;
+        }
 
+        private void Activar(double funcionActivacion, double valor)
+        {
             if (funcionActivacion == 0)
             {
                 Sigmoide(valor);
@@ -66,8 +83,8 @@ namespace Utilidades
                 Escalon(valor);
             else
                 BiPolar(valor);
-            return SalidaNeurona;
         }
+
         private double CalcularSoma(double[] entradas)
         {
             double valor = 0.0;            
@@ -110,34 +127,44 @@ namespace Utilidades
             int capaSalida = 0)
         {//Error puede ser por patron lineal o noo lineal dependiendo la capay el tipo de entrenamiento
             int cancelarDelta = 1;
-            if (backPropagation == 1)  cancelarDelta = 0;
-            if (capaSalida == 2) SalidaNeuronaDerivada = 1;  
+            if (backPropagation == 1) cancelarDelta = 0;
+            if (capaSalida == 2) SalidaNeuronaDerivada = 1;
+            GuardarPesosActuales();
             for (int i = 0; i < Pesos.Length; i++)
             {
-                PesosActuales[i] = Pesos[i];
-            }
-            UmbralActual = Umbral;
-            for (int i = 0; i < Pesos.Length; i++)
-            {
-                Pesos[i] = PesosActuales[i] + error * rataAprendizaje * entradas[i]*cancelarDelta
-                    + rataDinamica * (PesosActuales[i] - PesosAnteriores[i]) +
-                    backPropagation * 2 * rataAprendizaje * error 
-                    * SalidaNeuronaDerivada*entradas[i];
+                Pesos[i] = GetPesosActuales()[i] + error * rataAprendizaje * entradas[i] * cancelarDelta
+                    + rataDinamica * (GetPesosActuales()[i] - PesosAnteriores[i]) +
+                    backPropagation * 2 * rataAprendizaje * error
+                    * SalidaNeuronaDerivada * entradas[i];
 
             }
             Umbral = UmbralActual + rataAprendizaje * error * x0 * cancelarDelta +
-                rataDinamica*(UmbralActual - UmbralAnterior) +
+                rataDinamica * (UmbralActual - UmbralAnterior) +
                 backPropagation * 2 * rataAprendizaje * error * SalidaNeuronaDerivada;
-            for (int i = 0; i < Pesos.Length; i++)
-            {
-                PesosAnteriores[i] = PesosActuales[i];
-                PesosActuales[i] = Pesos[i];
-            }
-            UmbralAnterior = UmbralActual;
-            UmbralActual = Umbral;
+            GuardarPesosAnteriores();
+
             //Formula PesoNuevo = pesoActual + rataAprendizaje  entradas[i]
             //+rataDinamica * (PesosActuales[i] - PesosAnteriores[i])
         }
-                
+
+        private void GuardarPesosActuales()
+        {
+            for (int i = 0; i < Pesos.Length; i++)
+            {
+                GetPesosActuales()[i] = Pesos[i];
+            }
+            UmbralActual = Umbral;
+        }
+
+        private void GuardarPesosAnteriores()
+        {
+            for (int i = 0; i < Pesos.Length; i++)
+            {
+                PesosAnteriores[i] = GetPesosActuales()[i];
+                GetPesosActuales()[i] = Pesos[i];
+            }
+            UmbralAnterior = UmbralActual;
+            UmbralActual = Umbral;
+        }
     }
 }
