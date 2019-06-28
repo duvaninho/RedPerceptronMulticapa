@@ -10,18 +10,7 @@ namespace Utilidades
         public double Umbral { get; set; }       
         public double SalidaNeurona { get; set; }
 
-        private double[] pesosActuales;
-
-        public double[] GetPesosActuales()
-        {
-            return pesosActuales;
-        }
-
-        public void SetPesosActuales(double[] value)
-        {
-            pesosActuales = value;
-        }
-
+        public double[] PesosActuales { get; set; }
         public double UmbralActual { get; set; }
         public double ErrorLineal { get; set; }
         public double[] PesosAnteriores { get; set; }
@@ -35,7 +24,7 @@ namespace Utilidades
         public Neurona(Random random, int conexionesEntrada)
         {
             Pesos = new double[conexionesEntrada];
-            SetPesosActuales(new double[conexionesEntrada]);
+            PesosActuales = (new double[conexionesEntrada]);
             PesosAnteriores = new double[conexionesEntrada];
             for (int i = 0; i < Pesos.Length; i++)
             {
@@ -132,8 +121,8 @@ namespace Utilidades
             GuardarPesosActuales();
             for (int i = 0; i < Pesos.Length; i++)
             {
-                Pesos[i] = GetPesosActuales()[i] + error * rataAprendizaje * entradas[i] * cancelarDelta
-                    + rataDinamica * (GetPesosActuales()[i] - PesosAnteriores[i]) +
+                Pesos[i] = PesosActuales[i] + error * rataAprendizaje * entradas[i] * cancelarDelta
+                    + rataDinamica * (PesosActuales[i] - PesosAnteriores[i]) +
                     backPropagation * 2 * rataAprendizaje * error
                     * SalidaNeuronaDerivada * entradas[i];
 
@@ -151,7 +140,7 @@ namespace Utilidades
         {
             for (int i = 0; i < Pesos.Length; i++)
             {
-                GetPesosActuales()[i] = Pesos[i];
+                PesosActuales[i] = Pesos[i];
             }
             UmbralActual = Umbral;
         }
@@ -160,8 +149,8 @@ namespace Utilidades
         {
             for (int i = 0; i < Pesos.Length; i++)
             {
-                PesosAnteriores[i] = GetPesosActuales()[i];
-                GetPesosActuales()[i] = Pesos[i];
+                PesosAnteriores[i] = PesosActuales[i];
+                PesosActuales[i] = Pesos[i];
             }
             UmbralAnterior = UmbralActual;
             UmbralActual = Umbral;

@@ -448,6 +448,7 @@ namespace PerceptronUnicapa
                         Perceptron perceptronDevuelto = JsonConvert.DeserializeObject<Perceptron>(json);
                         perceptron = perceptronDevuelto;
                         redInicializada = true;
+                        btnInicializarRed.Enabled = false;
                     }
                 }
             }
@@ -524,7 +525,7 @@ namespace PerceptronUnicapa
 
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            perceptrons.Clear();
+            perceptron = null;
             comboBoxes.Clear();
             foreach (var series in chartError.Series)
             {
@@ -541,6 +542,7 @@ namespace PerceptronUnicapa
             LimpiarDataGrid(dgvTopologiaRed);
             LimpiarDataGrid(dgvSimulacion);
             LimpiarDataGrid(dgvPesosyUmbrales);
+            btnInicializarRed.Enabled = true;
             //while (dgvPesosyUmbrales.RowCount > 1)
             //{
 
