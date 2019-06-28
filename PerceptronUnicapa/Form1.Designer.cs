@@ -651,7 +651,7 @@
             this.btnCargarPatrones.Size = new System.Drawing.Size(253, 68);
             this.btnCargarPatrones.TabIndex = 0;
             this.btnCargarPatrones.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnCargarPatrones.Click += new System.EventHandler(this.btnCargarPatrones_Click);
+            this.btnCargarPatrones.Click += new System.EventHandler(this.BtnCargarPatrones_Click);
             // 
             // btnInicializarRed
             // 
@@ -1051,9 +1051,9 @@
             this.label6.ForeColor = System.Drawing.Color.Black;
             this.label6.Location = new System.Drawing.Point(0, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(637, 83);
+            this.label6.Size = new System.Drawing.Size(456, 83);
             this.label6.TabIndex = 12;
-            this.label6.Text = "Perceptron Unicapa";
+            this.label6.Text = "Red Neuronal";
             // 
             // tabPage2
             // 

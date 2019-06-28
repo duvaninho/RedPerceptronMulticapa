@@ -73,16 +73,16 @@ namespace Utilidades
 
         private void Activar(double funcionActivacion, double valor)
         {
-            if (funcionActivacion == 0)
+            switch (funcionActivacion)
             {
-                Sigmoide(valor);
+                case 0: Sigmoide(valor); break;
+                case 1: TangenteHipervolico(valor); break;
+                case 2: Escalon(valor); break;
+                case 3: BiPolar(valor); break;
+                default:
+                    Sigmoide(valor);
+                    break;
             }
-            else if (funcionActivacion == 1)
-                TangenteHipervolico(valor);
-            else if (funcionActivacion == 2)
-                Escalon(valor);
-            else
-                BiPolar(valor);
         }
 
         private double CalcularSoma(double[] entradas)

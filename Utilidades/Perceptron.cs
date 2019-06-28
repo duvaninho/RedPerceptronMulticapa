@@ -25,7 +25,7 @@ namespace Utilidades
         public List<Capa> Capas { get; set; }
         public bool Entrenada { get; set; }
 
-        public double[] ErroresLinealUltimaCapa { get; }
+        public double[] ErroresLinealUltimaCapa { get; set; }
 
         public Perceptron() { }
         public Perceptron(double[,] salidasDeseadas, double errorMaximo, int patrones,
@@ -159,6 +159,7 @@ namespace Utilidades
             }
             else
             {
+                //Primera capa se le pasa patrones de entreamiento
                 Capas[0].ModificarPesos(patronDeEntrenamiento, RataAprendizaje, errorPatron, RataDinamica,AlgoritmoEntrenamiento);
                 for (int i = 1; i < Capas.Count; i++)
                 {                                    
@@ -210,9 +211,7 @@ namespace Utilidades
 
         /////Metodos y funciones para la BackPropagation
         private void CalcularErroresNoLineales()
-        {
-            
-                      
+        {                                  
             Capas[Capas.Count - 2].CalcularErroresNoLineales(Capas[Capas.Count-1].MatrizPesos,
                 Capas[Capas.Count - 1].ErroresLineales);
             for (int i = Capas.Count -3; i >= 0; i--)

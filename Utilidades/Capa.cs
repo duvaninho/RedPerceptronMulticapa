@@ -62,7 +62,7 @@ namespace Utilidades
             int i = 0;
             foreach (var neurona in Neuronas)
             {
-                if (Tipo != 2)
+                if(Tipo != 2)
                 {
                     if(BackPropagation ==1)
                         neurona.ModificarPesos(entradas, rataAprendizaje, ErroresNoLineales[i], rataDinamica,BackPropagation);
@@ -78,6 +78,7 @@ namespace Utilidades
         public void CalcularErroresNoLineales(double[,] pesosCapaSiguiente,
             double[] errores) //Pueden ser lineales o No lineales
         {
+            //ErrorNoLineal = Sumatoria(pesos[i,j]*erroresNolineales[j])
             for (int i = 0; i < ErroresNoLineales.Length; i++)
             {
                 ErroresNoLineales[i] = 0;
