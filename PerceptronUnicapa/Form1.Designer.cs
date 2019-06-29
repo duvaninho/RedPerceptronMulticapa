@@ -29,19 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -52,12 +42,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.bunifuGradientPanel4 = new Bunifu.Framework.UI.BunifuGradientPanel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.chartPesos = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.chartError = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.CartesianErrors = new LiveCharts.WinForms.CartesianChart();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.chartUmbrales = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartVariacionRealEsperada = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.btnContinuar = new Bunifu.Framework.UI.BunifuFlatButton();
@@ -67,12 +55,6 @@
             this.Capa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Neuronas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Activacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.dgvSimulacion = new Bunifu.Framework.UI.BunifuCustomDataGrid();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvPesosyUmbrales = new Bunifu.Framework.UI.BunifuCustomDataGrid();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bunifuGradientPanel3 = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.btnNuevo = new Bunifu.Framework.UI.BunifuThinButton2();
@@ -113,17 +95,12 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.bunifuGradientPanel4.SuspendLayout();
-            this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartPesos)).BeginInit();
             this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartError)).BeginInit();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartUmbrales)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartVariacionRealEsperada)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopologiaRed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSimulacion)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPesosyUmbrales)).BeginInit();
             this.bunifuGradientPanel3.SuspendLayout();
             this.panel7.SuspendLayout();
             this.bunifuGradientPanel2.SuspendLayout();
@@ -172,7 +149,6 @@
             // 
             this.bunifuGradientPanel4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel4.BackgroundImage")));
             this.bunifuGradientPanel4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuGradientPanel4.Controls.Add(this.panel4);
             this.bunifuGradientPanel4.Controls.Add(this.panel9);
             this.bunifuGradientPanel4.Controls.Add(this.panel3);
             this.bunifuGradientPanel4.Controls.Add(this.panel6);
@@ -184,105 +160,63 @@
             this.bunifuGradientPanel4.Location = new System.Drawing.Point(251, 103);
             this.bunifuGradientPanel4.Name = "bunifuGradientPanel4";
             this.bunifuGradientPanel4.Quality = 10;
-            this.bunifuGradientPanel4.Size = new System.Drawing.Size(1061, 614);
+            this.bunifuGradientPanel4.Size = new System.Drawing.Size(972, 614);
             this.bunifuGradientPanel4.TabIndex = 3;
-            // 
-            // panel4
-            // 
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel4.Controls.Add(this.chartPesos);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(453, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(155, 514);
-            this.panel4.TabIndex = 2;
-            // 
-            // chartPesos
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.chartPesos.ChartAreas.Add(chartArea1);
-            this.chartPesos.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chartPesos.Legends.Add(legend1);
-            this.chartPesos.Location = new System.Drawing.Point(0, 0);
-            this.chartPesos.Name = "chartPesos";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartPesos.Series.Add(series1);
-            this.chartPesos.Size = new System.Drawing.Size(151, 510);
-            this.chartPesos.TabIndex = 0;
-            this.chartPesos.Text = "chart2";
             // 
             // panel9
             // 
-            this.panel9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel9.Controls.Add(this.chartError);
-            this.panel9.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel9.Controls.Add(this.CartesianErrors);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(453, 514);
+            this.panel9.Size = new System.Drawing.Size(271, 514);
             this.panel9.TabIndex = 1;
             // 
-            // chartError
+            // CartesianErrors
             // 
-            this.chartError.BorderlineColor = System.Drawing.Color.Transparent;
-            this.chartError.BorderlineWidth = 5;
-            chartArea2.Name = "ChartArea1";
-            this.chartError.ChartAreas.Add(chartArea2);
-            this.chartError.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.chartError.Legends.Add(legend2);
-            this.chartError.Location = new System.Drawing.Point(0, 0);
-            this.chartError.Name = "chartError";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Error Entrenamiento";
-            this.chartError.Series.Add(series2);
-            this.chartError.Size = new System.Drawing.Size(449, 510);
-            this.chartError.TabIndex = 0;
-            this.chartError.Text = "Error Vs Iteracion";
+            this.CartesianErrors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CartesianErrors.Location = new System.Drawing.Point(0, 0);
+            this.CartesianErrors.Name = "CartesianErrors";
+            this.CartesianErrors.Size = new System.Drawing.Size(271, 514);
+            this.CartesianErrors.TabIndex = 0;
+            this.CartesianErrors.Text = "CartesianErrors";
             // 
             // panel3
             // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.chartUmbrales);
+            this.panel3.Controls.Add(this.chartVariacionRealEsperada);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(608, 0);
+            this.panel3.Location = new System.Drawing.Point(271, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(453, 514);
+            this.panel3.Size = new System.Drawing.Size(701, 514);
             this.panel3.TabIndex = 1;
             // 
-            // chartUmbrales
+            // chartVariacionRealEsperada
             // 
             chartArea3.Name = "ChartArea1";
-            this.chartUmbrales.ChartAreas.Add(chartArea3);
-            this.chartUmbrales.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartVariacionRealEsperada.ChartAreas.Add(chartArea3);
+            this.chartVariacionRealEsperada.Dock = System.Windows.Forms.DockStyle.Fill;
             legend3.Name = "Legend1";
-            this.chartUmbrales.Legends.Add(legend3);
-            this.chartUmbrales.Location = new System.Drawing.Point(0, 0);
-            this.chartUmbrales.Name = "chartUmbrales";
+            this.chartVariacionRealEsperada.Legends.Add(legend3);
+            this.chartVariacionRealEsperada.Location = new System.Drawing.Point(0, 0);
+            this.chartVariacionRealEsperada.Name = "chartVariacionRealEsperada";
             series3.ChartArea = "ChartArea1";
             series3.Legend = "Legend1";
             series3.Name = "Series1";
-            this.chartUmbrales.Series.Add(series3);
-            this.chartUmbrales.Size = new System.Drawing.Size(449, 510);
-            this.chartUmbrales.TabIndex = 0;
-            this.chartUmbrales.Text = "Variacion de umbral respecto a la iteracion";
-            this.chartUmbrales.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
+            this.chartVariacionRealEsperada.Series.Add(series3);
+            this.chartVariacionRealEsperada.Size = new System.Drawing.Size(701, 514);
+            this.chartVariacionRealEsperada.TabIndex = 0;
+            this.chartVariacionRealEsperada.Text = "Variacion de umbral respecto a la iteracion";
+            this.chartVariacionRealEsperada.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
             // 
             // panel6
             // 
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel6.Controls.Add(this.label5);
             this.panel6.Controls.Add(this.btnContinuar);
             this.panel6.Controls.Add(this.btnEntrenar);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel6.Location = new System.Drawing.Point(0, 514);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1061, 100);
+            this.panel6.Size = new System.Drawing.Size(972, 100);
             this.panel6.TabIndex = 1;
             // 
             // label5
@@ -319,7 +253,7 @@
             this.btnContinuar.IconVisible = true;
             this.btnContinuar.IconZoom = 70D;
             this.btnContinuar.IsTab = false;
-            this.btnContinuar.Location = new System.Drawing.Point(739, 25);
+            this.btnContinuar.Location = new System.Drawing.Point(536, 37);
             this.btnContinuar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnContinuar.Name = "btnContinuar";
             this.btnContinuar.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
@@ -356,7 +290,7 @@
             this.btnEntrenar.IconVisible = true;
             this.btnEntrenar.IconZoom = 70D;
             this.btnEntrenar.IsTab = false;
-            this.btnEntrenar.Location = new System.Drawing.Point(535, 25);
+            this.btnEntrenar.Location = new System.Drawing.Point(332, 37);
             this.btnEntrenar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.btnEntrenar.Name = "btnEntrenar";
             this.btnEntrenar.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(139)))), ((int)(((byte)(87)))));
@@ -373,31 +307,28 @@
             // 
             // panel8
             // 
-            this.panel8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel8.Controls.Add(this.dgvTopologiaRed);
-            this.panel8.Controls.Add(this.dgvSimulacion);
-            this.panel8.Controls.Add(this.dgvPesosyUmbrales);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel8.Location = new System.Drawing.Point(1312, 103);
+            this.panel8.Location = new System.Drawing.Point(1223, 103);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(259, 614);
+            this.panel8.Size = new System.Drawing.Size(348, 614);
             this.panel8.TabIndex = 1;
             // 
             // dgvTopologiaRed
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvTopologiaRed.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvTopologiaRed.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvTopologiaRed.BackgroundColor = System.Drawing.Color.White;
             this.dgvTopologiaRed.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTopologiaRed.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Honeydew;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTopologiaRed.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Honeydew;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTopologiaRed.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvTopologiaRed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTopologiaRed.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Capa,
@@ -408,10 +339,10 @@
             this.dgvTopologiaRed.EnableHeadersVisualStyles = false;
             this.dgvTopologiaRed.HeaderBgColor = System.Drawing.Color.SeaGreen;
             this.dgvTopologiaRed.HeaderForeColor = System.Drawing.Color.Honeydew;
-            this.dgvTopologiaRed.Location = new System.Drawing.Point(0, 332);
+            this.dgvTopologiaRed.Location = new System.Drawing.Point(0, 0);
             this.dgvTopologiaRed.Name = "dgvTopologiaRed";
             this.dgvTopologiaRed.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvTopologiaRed.Size = new System.Drawing.Size(255, 166);
+            this.dgvTopologiaRed.Size = new System.Drawing.Size(348, 166);
             this.dgvTopologiaRed.TabIndex = 4;
             this.dgvTopologiaRed.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.DgvTopologiaRed_EditingControlShowing);
             // 
@@ -434,91 +365,10 @@
             "Escalon"});
             this.Activacion.Name = "Activacion";
             // 
-            // dgvSimulacion
-            // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvSimulacion.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvSimulacion.BackgroundColor = System.Drawing.Color.White;
-            this.dgvSimulacion.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSimulacion.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Honeydew;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvSimulacion.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvSimulacion.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSimulacion.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4});
-            this.dgvSimulacion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvSimulacion.DoubleBuffered = true;
-            this.dgvSimulacion.EnableHeadersVisualStyles = false;
-            this.dgvSimulacion.HeaderBgColor = System.Drawing.Color.SeaGreen;
-            this.dgvSimulacion.HeaderForeColor = System.Drawing.Color.Honeydew;
-            this.dgvSimulacion.Location = new System.Drawing.Point(0, 166);
-            this.dgvSimulacion.Name = "dgvSimulacion";
-            this.dgvSimulacion.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvSimulacion.Size = new System.Drawing.Size(255, 166);
-            this.dgvSimulacion.TabIndex = 3;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Entradas";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "Salidas";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            // 
-            // dgvPesosyUmbrales
-            // 
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvPesosyUmbrales.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvPesosyUmbrales.BackgroundColor = System.Drawing.Color.White;
-            this.dgvPesosyUmbrales.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPesosyUmbrales.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Honeydew;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPesosyUmbrales.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvPesosyUmbrales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPesosyUmbrales.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2});
-            this.dgvPesosyUmbrales.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvPesosyUmbrales.DoubleBuffered = true;
-            this.dgvPesosyUmbrales.EnableHeadersVisualStyles = false;
-            this.dgvPesosyUmbrales.HeaderBgColor = System.Drawing.Color.SeaGreen;
-            this.dgvPesosyUmbrales.HeaderForeColor = System.Drawing.Color.Honeydew;
-            this.dgvPesosyUmbrales.Location = new System.Drawing.Point(0, 0);
-            this.dgvPesosyUmbrales.Name = "dgvPesosyUmbrales";
-            this.dgvPesosyUmbrales.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvPesosyUmbrales.Size = new System.Drawing.Size(255, 166);
-            this.dgvPesosyUmbrales.TabIndex = 2;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Pesos";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Umbrales";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
             // bunifuGradientPanel3
             // 
             this.bunifuGradientPanel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel3.BackgroundImage")));
             this.bunifuGradientPanel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuGradientPanel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.bunifuGradientPanel3.Controls.Add(this.panel7);
             this.bunifuGradientPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.bunifuGradientPanel3.GradientBottomLeft = System.Drawing.Color.White;
@@ -533,7 +383,6 @@
             // 
             // panel7
             // 
-            this.panel7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel7.Controls.Add(this.btnNuevo);
             this.panel7.Controls.Add(this.btnSimular);
             this.panel7.Controls.Add(this.btnCargarPesosyUmbrales);
@@ -542,7 +391,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1316, 123);
+            this.panel7.Size = new System.Drawing.Size(1320, 127);
             this.panel7.TabIndex = 2;
             // 
             // btnNuevo
@@ -564,7 +413,7 @@
             this.btnNuevo.IdleFillColor = System.Drawing.Color.White;
             this.btnNuevo.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnNuevo.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnNuevo.Location = new System.Drawing.Point(1023, 21);
+            this.btnNuevo.Location = new System.Drawing.Point(1031, 25);
             this.btnNuevo.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.btnNuevo.Name = "btnNuevo";
             this.btnNuevo.Size = new System.Drawing.Size(253, 68);
@@ -591,7 +440,7 @@
             this.btnSimular.IdleFillColor = System.Drawing.Color.White;
             this.btnSimular.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnSimular.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnSimular.Location = new System.Drawing.Point(773, 21);
+            this.btnSimular.Location = new System.Drawing.Point(773, 25);
             this.btnSimular.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.btnSimular.Name = "btnSimular";
             this.btnSimular.Size = new System.Drawing.Size(253, 68);
@@ -618,7 +467,7 @@
             this.btnCargarPesosyUmbrales.IdleFillColor = System.Drawing.Color.White;
             this.btnCargarPesosyUmbrales.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnCargarPesosyUmbrales.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnCargarPesosyUmbrales.Location = new System.Drawing.Point(263, 21);
+            this.btnCargarPesosyUmbrales.Location = new System.Drawing.Point(263, 25);
             this.btnCargarPesosyUmbrales.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.btnCargarPesosyUmbrales.Name = "btnCargarPesosyUmbrales";
             this.btnCargarPesosyUmbrales.Size = new System.Drawing.Size(253, 68);
@@ -645,7 +494,7 @@
             this.btnCargarPatrones.IdleFillColor = System.Drawing.Color.White;
             this.btnCargarPatrones.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnCargarPatrones.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnCargarPatrones.Location = new System.Drawing.Point(5, 21);
+            this.btnCargarPatrones.Location = new System.Drawing.Point(5, 25);
             this.btnCargarPatrones.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.btnCargarPatrones.Name = "btnCargarPatrones";
             this.btnCargarPatrones.Size = new System.Drawing.Size(253, 68);
@@ -672,7 +521,7 @@
             this.btnInicializarRed.IdleFillColor = System.Drawing.Color.White;
             this.btnInicializarRed.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnInicializarRed.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnInicializarRed.Location = new System.Drawing.Point(518, 21);
+            this.btnInicializarRed.Location = new System.Drawing.Point(518, 25);
             this.btnInicializarRed.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.btnInicializarRed.Name = "btnInicializarRed";
             this.btnInicializarRed.Size = new System.Drawing.Size(253, 68);
@@ -700,7 +549,6 @@
             // panel5
             // 
             this.panel5.AutoSize = true;
-            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel5.Controls.Add(this.txtLog);
             this.panel5.Controls.Add(this.CmbAlgoritmoEntrenamiento);
             this.panel5.Controls.Add(this.label8);
@@ -732,7 +580,7 @@
             this.txtLog.Location = new System.Drawing.Point(0, 418);
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
-            this.txtLog.Size = new System.Drawing.Size(244, 112);
+            this.txtLog.Size = new System.Drawing.Size(248, 116);
             this.txtLog.TabIndex = 11;
             this.txtLog.Text = "";
             // 
@@ -746,7 +594,7 @@
             "BackPropagation"});
             this.CmbAlgoritmoEntrenamiento.Location = new System.Drawing.Point(0, 385);
             this.CmbAlgoritmoEntrenamiento.Name = "CmbAlgoritmoEntrenamiento";
-            this.CmbAlgoritmoEntrenamiento.Size = new System.Drawing.Size(244, 33);
+            this.CmbAlgoritmoEntrenamiento.Size = new System.Drawing.Size(248, 33);
             this.CmbAlgoritmoEntrenamiento.TabIndex = 15;
             // 
             // label8
@@ -773,7 +621,7 @@
             0,
             0});
             this.NudRataDinamica.Name = "NudRataDinamica";
-            this.NudRataDinamica.Size = new System.Drawing.Size(244, 32);
+            this.NudRataDinamica.Size = new System.Drawing.Size(248, 32);
             this.NudRataDinamica.TabIndex = 13;
             this.NudRataDinamica.Value = new decimal(new int[] {
             9,
@@ -813,10 +661,10 @@
             this.btnBorrarLog.IdleFillColor = System.Drawing.Color.White;
             this.btnBorrarLog.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnBorrarLog.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnBorrarLog.Location = new System.Drawing.Point(0, 530);
+            this.btnBorrarLog.Location = new System.Drawing.Point(0, 534);
             this.btnBorrarLog.Margin = new System.Windows.Forms.Padding(5);
             this.btnBorrarLog.Name = "btnBorrarLog";
-            this.btnBorrarLog.Size = new System.Drawing.Size(244, 41);
+            this.btnBorrarLog.Size = new System.Drawing.Size(248, 41);
             this.btnBorrarLog.TabIndex = 4;
             this.btnBorrarLog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnBorrarLog.Click += new System.EventHandler(this.BtnBorrarLog_Click);
@@ -860,7 +708,7 @@
             this.nudNumeroCapas.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudNumeroCapas.Location = new System.Drawing.Point(0, 196);
             this.nudNumeroCapas.Name = "nudNumeroCapas";
-            this.nudNumeroCapas.Size = new System.Drawing.Size(244, 32);
+            this.nudNumeroCapas.Size = new System.Drawing.Size(248, 32);
             this.nudNumeroCapas.TabIndex = 12;
             this.nudNumeroCapas.Value = new decimal(new int[] {
             2,
@@ -893,7 +741,7 @@
             0,
             0});
             this.nudRataAprendizaje.Name = "nudRataAprendizaje";
-            this.nudRataAprendizaje.Size = new System.Drawing.Size(244, 32);
+            this.nudRataAprendizaje.Size = new System.Drawing.Size(248, 32);
             this.nudRataAprendizaje.TabIndex = 8;
             this.nudRataAprendizaje.Value = new decimal(new int[] {
             9,
@@ -925,7 +773,7 @@
             0,
             0});
             this.nudErrorMaximo.Name = "nudErrorMaximo";
-            this.nudErrorMaximo.Size = new System.Drawing.Size(244, 32);
+            this.nudErrorMaximo.Size = new System.Drawing.Size(248, 32);
             this.nudErrorMaximo.TabIndex = 9;
             this.nudErrorMaximo.Value = new decimal(new int[] {
             5,
@@ -956,7 +804,7 @@
             0,
             0});
             this.nudNoIteraciones.Name = "nudNoIteraciones";
-            this.nudNoIteraciones.Size = new System.Drawing.Size(244, 32);
+            this.nudNoIteraciones.Size = new System.Drawing.Size(248, 32);
             this.nudNoIteraciones.TabIndex = 10;
             this.nudNoIteraciones.Value = new decimal(new int[] {
             20,
@@ -978,7 +826,6 @@
             // 
             // panel1
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.dgvPatrones);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -1013,7 +860,7 @@
             this.dgvPatrones.Location = new System.Drawing.Point(0, 0);
             this.dgvPatrones.Name = "dgvPatrones";
             this.dgvPatrones.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvPatrones.Size = new System.Drawing.Size(244, 162);
+            this.dgvPatrones.Size = new System.Drawing.Size(248, 166);
             this.dgvPatrones.TabIndex = 0;
             // 
             // Entradas
@@ -1030,7 +877,6 @@
             // 
             this.bunifuGradientPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel1.BackgroundImage")));
             this.bunifuGradientPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuGradientPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.bunifuGradientPanel1.Controls.Add(this.label6);
             this.bunifuGradientPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.bunifuGradientPanel1.GradientBottomLeft = System.Drawing.Color.Green;
@@ -1109,21 +955,17 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Perceptron Unicapa";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.bunifuGradientPanel4.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chartPesos)).EndInit();
             this.panel9.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chartError)).EndInit();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chartUmbrales)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartVariacionRealEsperada)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopologiaRed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSimulacion)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPesosyUmbrales)).EndInit();
             this.bunifuGradientPanel3.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.bunifuGradientPanel2.ResumeLayout(false);
@@ -1174,10 +1016,8 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartErrorvsIteracion;
-        private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartUmbrales;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartPesos;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartVariacionRealEsperada;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
@@ -1186,19 +1026,12 @@
         private Bunifu.Framework.UI.BunifuThinButton2 btnSimular;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Panel panel9;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartError;
         private Bunifu.Framework.UI.BunifuThinButton2 btnCargarPesosyUmbrales;
         private Bunifu.Framework.UI.BunifuThinButton2 btnNuevo;
         private Bunifu.Framework.UI.BunifuThinButton2 btnBorrarLog;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Entradas;
         private System.Windows.Forms.DataGridViewTextBoxColumn Salidas;
-        private Bunifu.Framework.UI.BunifuCustomDataGrid dgvSimulacion;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private Bunifu.Framework.UI.BunifuCustomDataGrid dgvPesosyUmbrales;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private Bunifu.Framework.UI.BunifuCustomDataGrid dgvTopologiaRed;
         private System.Windows.Forms.NumericUpDown nudNumeroCapas;
         private System.Windows.Forms.DataGridViewTextBoxColumn Capa;
@@ -1208,6 +1041,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox CmbAlgoritmoEntrenamiento;
         private System.Windows.Forms.Label label8;
+        private LiveCharts.WinForms.CartesianChart CartesianErrors;
     }
 }
 

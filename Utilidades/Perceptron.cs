@@ -24,7 +24,7 @@ namespace Utilidades
         public bool Entrenando { get; set; }
         public List<Capa> Capas { get; set; }
         public bool Entrenada { get; set; }
-
+        public double[] variacionRealDeseada { get; set; }
         public double[] ErroresLinealUltimaCapa { get; set; }
 
         public Perceptron() { }
@@ -53,6 +53,7 @@ namespace Utilidades
             MayoresSalidas = new double[SalidasDeseadas.GetLength(1)];
             NormalizarPatrones();
             AlgoritmoEntrenamiento = BackPropagation;
+            variacionRealDeseada = new double[CantidadSalidas * 2];
         }
         private void MapSalidasDeseadas(double[,] salidasDeseadas)
         {
@@ -122,6 +123,7 @@ namespace Utilidades
                 }
                 int ultimaCapa = Capas.Count - 1;
                 errorPorPatron = GetErrorPatron(Capas[ultimaCapa].Salidas, i);
+                //variacionRealDeseada[i] = Capas[ultimaCapa].Salidas[i];
                 errorPorPatron /= CantidadSalidas;
                 Console.WriteLine("Error Por Patron: " + errorPorPatron);
                 ErrorEntrenamiento += errorPorPatron;

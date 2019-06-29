@@ -6,12 +6,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using LiveCharts;
+using Microsoft.Win32;
 using System.Runtime.InteropServices;
 using System.IO;
 using Utilidades;
 using Newtonsoft.Json;
 using System.Threading;
-
+using LiveCharts.Defaults;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+using LiveCharts.Wpf;
+using System.Threading.Tasks;
 
 namespace PerceptronUnicapa
 {
@@ -24,11 +29,7 @@ namespace PerceptronUnicapa
 
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
-
-        Rectangle sizeGripRectangle;
-        bool inSizeDrag = false;
-        const int GRIP_SIZE = 15;
-        List<Perceptron> perceptrons = new List<Perceptron>();
+        
         int w = 0;
         int h = 0;
         #endregion
@@ -37,7 +38,11 @@ namespace PerceptronUnicapa
         double[,] matrizSalidas;
         int cantidadEntradas, cantidadSalidas, patrones;
         bool redInicializada, redEntrenada;
+        public ChartValues<ObservablePoint> Errores { get; set; }
+        public ChartValues<ObservablePoint> VariacionSalida { get; set; }
         Perceptron perceptron;
+        //Creamos el delegado 
+        
         public Form1()
         {
             InitializeComponent();
@@ -45,21 +50,19 @@ namespace PerceptronUnicapa
             this.MaximizeBox = false;            
             redInicializada = false;
             redEntrenada = false;
-            chartError.Titles.Add("Error entrenamiento Vs Iteracion");
-            chartError.Titles[0].Font = new Font("Microsoft YaHei UI", 15);
-            chartError.ChartAreas["ChartArea1"].AxisX.MajorGrid.Enabled = false;
-            chartError.ChartAreas["ChartArea1"].AxisY.MajorGrid.Enabled = false;
-            chartError.ChartAreas["ChartArea1"].AxisX.RoundAxisValues();
-            chartPesos.Titles.Add("Varacion de Pesos sinapticos Vs Iteracion");
-            chartPesos.Titles[0].Font = new Font("Microsoft YaHei UI", 15);
-            chartPesos.ChartAreas["ChartArea1"].AxisX.MajorGrid.Enabled = false;
-            chartPesos.ChartAreas["ChartArea1"].AxisY.MajorGrid.Enabled = false;
-            chartPesos.ChartAreas["ChartArea1"].AxisX.RoundAxisValues();
-            chartUmbrales.Titles.Add("Variacion de Umbrales Vs Iteracion");
-            chartUmbrales.Titles[0].Font = new Font("Microsoft YaHei UI", 15);
-            chartUmbrales.ChartAreas["ChartArea1"].AxisX.MajorGrid.Enabled = false;
-            chartUmbrales.ChartAreas["ChartArea1"].AxisY.MajorGrid.Enabled = false;            
-            chartUmbrales.ChartAreas["ChartArea1"].AxisX.RoundAxisValues();
+            Errores = new ChartValues<ObservablePoint>();
+            CartesianErrors.Series = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Values = Errores
+                }
+            };
+            chartVariacionRealEsperada.Titles.Add("Variacion de Umbrales Vs Iteracion");
+            chartVariacionRealEsperada.Titles[0].Font = new Font("Microsoft YaHei UI", 15);
+            chartVariacionRealEsperada.ChartAreas["ChartArea1"].AxisX.MajorGrid.Enabled = false;
+            chartVariacionRealEsperada.ChartAreas["ChartArea1"].AxisY.MajorGrid.Enabled = false;            
+            chartVariacionRealEsperada.ChartAreas["ChartArea1"].AxisX.RoundAxisValues();
 
         }
         private void WriteJSON(object objeto, string path)
@@ -67,7 +70,17 @@ namespace PerceptronUnicapa
             string json = JsonConvert.SerializeObject(objeto);
             File.WriteAllText(path, json);
         }
-
+        private void Plot()
+        {
+            Thread.Sleep(200);
+            Errores.Add(new ObservablePoint( perceptron.IteracionesEntrenamiento, perceptron.ErrorEntrenamiento));
+            VariacionSalida = new ChartValues<ObservablePoint>();
+            
+        }
+        private void CorrerHiloPlot()
+        {
+            Task.Factory.StartNew(Plot);
+        }
         private void BtnInicializarRed_Click(object sender, EventArgs e)
         {
             if (patrones == 0)
@@ -113,6 +126,11 @@ namespace PerceptronUnicapa
 
         private void BtnEntrenar_Click(object sender, EventArgs e)
         {
+            Task.Factory.StartNew(Entrenar);
+        }
+
+        private void Entrenar()
+        {
             if (patrones == 0)
             {
                 MessageBox.Show("Debe cargar un archivo para continuar con el entrenamiento",
@@ -120,70 +138,34 @@ namespace PerceptronUnicapa
             }
             else if (redInicializada)
             {
-                
-                    if (perceptron.ErrorEntrenamiento < perceptron.ErrorMaximo)
-                    {
-                        MessageBox.Show("La red ha entrenado en la iteracion " + perceptron.IteracionesEntrenamiento,
-                            "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        //removerColumnasDataDrid(dgvPesosyUmbrales);
-                        //dgvPesosyUmbrales.ColumnCount = cantidadEntradas + 1;
-                        //int h = 1;
-                        //for (int i = 0; i < dgvPesosyUmbrales.ColumnCount; i++)
-                        //{
-                        //    if (i < cantidadEntradas)
-                        //    {
-                        //        dgvPesosyUmbrales.Columns[i].Name = "peso" + (i + 1);
-                        //    }
-                        //    else
-                        //    {
-                        //        dgvPesosyUmbrales.Columns[i].Name = "umbral" + h;
-                        //        h++;
-                        //    }
-                        //}
-                        //string[] pesosyumbrales = new string[cantidadSalidas];
-                        //int pesosFinales = 0;
-                        //foreach (var neurona in perceptron.capas)
-                        //{
-                        //    string cadenaPesosUmbrales = "";
-                        //    for (int i = 0; i < neurona.pesosSimulacion.Length; i++)
-                        //    {
-                        //        cadenaPesosUmbrales += neurona.pesosSimulacion[i] + ";";
-                        //    }
-                        //    cadenaPesosUmbrales += neurona.umbralSimulacion + ";";
-                        //    pesosyumbrales[pesosFinales] = cadenaPesosUmbrales;
-                        //    dgvPesosyUmbrales.Rows.Add(pesosyumbrales[pesosFinales].Split(';'));
-                        //    pesosFinales++;
-                        //}
-                    }
-                    else
-                    {
-                        perceptron.Entrenar();
-                        chartError.Series[0].Points.AddXY(
-                            perceptron.IteracionesEntrenamiento, perceptron.ErrorEntrenamiento);
-                        //int iteradorSeriePesos = 0;
-                        //int iteradorSerieUmbral = 0;
-                        //foreach (var neurona in perceptron.capas)
-                        //{
-                        //    for (int i = 0; i < neurona.pesosSimulacion.Length; i++)
-                        //    {
-                        //        chartPesos.Series[iteradorSeriePesos].Points.AddXY(
-                        //            perceptron.iteracionesEntrenamiento,
-                        //            neurona.pesosSimulacion[i]);
-                        //        iteradorSeriePesos++;
-                        //    }
-                        //    chartUmbrales.Series[iteradorSerieUmbral].Points.AddXY(
-                        //        perceptron.iteracionesEntrenamiento,
-                        //        neurona.umbralSimulacion);
-                        //    iteradorSerieUmbral++;
-                        //}
-                        if (!perceptron.Entrenando)
-                        {
-                            redEntrenada = true;
 
-                        }
+                if (perceptron.ErrorEntrenamiento < perceptron.ErrorMaximo)
+                {
+                    MessageBox.Show("La red ha entrenado en la iteracion " + perceptron.IteracionesEntrenamiento,
+                        "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    perceptron.Entrenar();
+                    Plot();
+                    int iteradorVariacion = 0;
+                    for (int i = 0; i < perceptron.variacionRealDeseada.Length; i++)
+                    {
+                        chartVariacionRealEsperada.Series[iteradorVariacion].Points.AddXY(
+                            perceptron.IteracionesEntrenamiento,
+                            perceptron.variacionRealDeseada[i]);
+                        iteradorVariacion++;
+                    }
+
+
+                    if (!perceptron.Entrenando)
+                    {
+                        redEntrenada = true;
 
                     }
-                
+
+                }
+
             }
             else
             {
@@ -191,6 +173,7 @@ namespace PerceptronUnicapa
                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void RemoverColumnasDataDrid(DataGridView dataGridView)
         {
             if (dataGridView.Columns.Count >0)
@@ -204,6 +187,11 @@ namespace PerceptronUnicapa
         }
         private void BtnContinuar_Click(object sender, EventArgs e)
         {
+            Task.Factory.StartNew( Continuar);
+        }
+
+        private void Continuar()
+        {
             if (patrones == 0)
             {
                 MessageBox.Show("Debe cargar un archivo para continuar con el entreamiento",
@@ -211,144 +199,93 @@ namespace PerceptronUnicapa
             }
             else if (redInicializada)
             {
-                //removerColumnasDataDrid(dgvPesosyUmbrales);
-                //dgvPesosyUmbrales.ColumnCount = cantidadEntradas + 1;
-                //int h = 1;
-                //for (int i = 0; i < dgvPesosyUmbrales.ColumnCount; i++)
-                //{
-                //    if (i < cantidadEntradas)
-                //    {
-                //        dgvPesosyUmbrales.Columns[i].Name = "peso" + (i + 1);
-                //    }
-                //    else
-                //    {
-                //        dgvPesosyUmbrales.Columns[i].Name = "umbral" + h;
-                //        h++;
-                //    }
-                //}
-                //string[] pesosyumbrales = new string[cantidadSalidas];
-                
-                    while (Aprendio(perceptron))
+                while (Aprendio(perceptron))
+                {
+                    perceptron.Entrenar();
+                    
+                    Plot();
+                }
+                if (!perceptron.Entrenada)
+                {
+                    redEntrenada = true;
+                    DialogResult result =
+                    MessageBox.Show("\tLa Red Ha entrenado.\n¿Desea guardar " +
+                        "pesos y umbrales?", "Informacion", MessageBoxButtons
+                        .YesNoCancel, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
                     {
-                        perceptron.Entrenar();
-                        chartError.Series[0].Points.AddXY(
-                            perceptron.IteracionesEntrenamiento,
-                            perceptron.ErrorEntrenamiento);
-                        chartError.Update();
-                        //chartUmbrales.Update();
-                        //chartPesos.Update();
-                        //chartError.ChartAreas[0].RecalculateAxesScale();
-                        //int iteradorSeriePesos = 0;
-                        //int iteradorSerieUmbral = 0;
-                        //int pesosFinales = 0;
-                        //foreach (var neurona in perceptron.neuronas)
-                        //{
-                        //    string cadenaPesosUmbrales = "";
-                        //    for (int i = 0; i < neurona.pesosSimulacion.Length; i++)
-                        //    {
-                        //        cadenaPesosUmbrales += neurona.pesosSimulacion[i] + ";";
-                        //        chartPesos.Series[iteradorSeriePesos].Points.AddXY(
-                        //            perceptron.iteracionesEntrenamiento,
-                        //            neurona.pesosSimulacion[i]);
-
-                        //        iteradorSeriePesos++;
-                        //    }
-                        //    chartUmbrales.Series[iteradorSerieUmbral].Points.AddXY(
-                        //        perceptron.iteracionesEntrenamiento,
-                        //        neurona.umbralSimulacion);
-                        //    cadenaPesosUmbrales += neurona.umbralSimulacion + ";";
-                        //    iteradorSerieUmbral++;
-                        //    pesosyumbrales[pesosFinales] = cadenaPesosUmbrales;
-                        //    pesosFinales++;
-                        //}
-                        //Thread.Sleep(500);
-                    }
-
-                    //    for (int i = 0; i < pesosyumbrales.Length; i++)
-                    //    {
-                    //        dgvPesosyUmbrales.Rows.Add(pesosyumbrales[i].Split(';'));
-                    //    }
-                    if (!perceptron.Entrenada)
-                    {
-                        redEntrenada = true;
-                        DialogResult result =
-                        MessageBox.Show("\tLa Red Ha entrenado.\n¿Desea guardar " +
-                            "pesos y umbrales?", "Informacion", MessageBoxButtons
-                            .YesNoCancel, MessageBoxIcon.Question);
-                        if (result == DialogResult.Yes)
+                        saveFileDialog1.Filter = "json files (*.json)|*.json";
+                        if (saveFileDialog1.ShowDialog() ==
+                            DialogResult.OK && saveFileDialog1.FileName.Length
+                            > 0)
                         {
-                            saveFileDialog1.Filter = "json files (*.json)|*.json";
-                            if (saveFileDialog1.ShowDialog() ==
-                                DialogResult.OK && saveFileDialog1.FileName.Length
-                                > 0)
-                            {
-                                WriteJSON(perceptron, saveFileDialog1.FileName);
-                            }
-
+                            WriteJSON(perceptron, saveFileDialog1.FileName);
                         }
 
                     }
-                    //else
-                    //{
-                    //    redEntrenada = false;
-                    //    DialogResult result =
-                    //    MessageBox.Show("\tLa Red no alcanzó a entrenar.\n¿Desea guardar " +
-                    //        "pesos y umbrales?", "Informacion", MessageBoxButtons
-                    //        .YesNoCancel, MessageBoxIcon.Question);
-                    //    if (result == DialogResult.Yes)
-                    //    {
-                    //        saveFileDialog1.Filter = "csv files (*.csv)|*.csv";
-                    //        if (saveFileDialog1.ShowDialog() ==
-                    //            DialogResult.OK && saveFileDialog1.FileName.Length
-                    //            > 0)
-                    //        {
-                    //            bool band = false;
-                    //            try
-                    //            {
-                    //                FileInfo fileInfo = new FileInfo(saveFileDialog1.FileName);
-                    //                StreamWriter writer = fileInfo.CreateText();
-                    //                string header = "";
-                    //                for (int i = 0; i < cantidadEntradas; i++)
-                    //                {
-                    //                    header += "peso" + i + ";";
-                    //                }
-                    //                header += "umbral";
-                    //                writer.WriteLine(header);
-                    //                foreach (var neurona in perceptron.neuronas)
-                    //                {
-                    //                    string cadena = "";
-                    //                    for (int i = 0; i < neurona.pesosSimulacion.Length; i++)
-                    //                    {
-                    //                        cadena += neurona.pesosSimulacion[i] + ";";
-                    //                    }
-                    //                    cadena += neurona.umbralSimulacion;
-                    //                    writer.WriteLine(cadena);
-                    //                }
-                    //                writer.Close();
-                    //            }
-                    //            catch (Exception)
-                    //            {
 
-                    //                throw;
-                    //            }
-                    //        }
-                    //        //for (int i = 0; i < length; i++)
-                    //        //{
+                }
+                //else
+                //{
+                //    redEntrenada = false;
+                //    DialogResult result =
+                //    MessageBox.Show("\tLa Red no alcanzó a entrenar.\n¿Desea guardar " +
+                //        "pesos y umbrales?", "Informacion", MessageBoxButtons
+                //        .YesNoCancel, MessageBoxIcon.Question);
+                //    if (result == DialogResult.Yes)
+                //    {
+                //        saveFileDialog1.Filter = "csv files (*.csv)|*.csv";
+                //        if (saveFileDialog1.ShowDialog() ==
+                //            DialogResult.OK && saveFileDialog1.FileName.Length
+                //            > 0)
+                //        {
+                //            bool band = false;
+                //            try
+                //            {
+                //                FileInfo fileInfo = new FileInfo(saveFileDialog1.FileName);
+                //                StreamWriter writer = fileInfo.CreateText();
+                //                string header = "";
+                //                for (int i = 0; i < cantidadEntradas; i++)
+                //                {
+                //                    header += "peso" + i + ";";
+                //                }
+                //                header += "umbral";
+                //                writer.WriteLine(header);
+                //                foreach (var neurona in perceptron.neuronas)
+                //                {
+                //                    string cadena = "";
+                //                    for (int i = 0; i < neurona.pesosSimulacion.Length; i++)
+                //                    {
+                //                        cadena += neurona.pesosSimulacion[i] + ";";
+                //                    }
+                //                    cadena += neurona.umbralSimulacion;
+                //                    writer.WriteLine(cadena);
+                //                }
+                //                writer.Close();
+                //            }
+                //            catch (Exception)
+                //            {
 
-                    //        //}
-                    //        //foreach (var neurona in perceptron.neuronas)
-                    //        //{
+                //                throw;
+                //            }
+                //        }
+                //        //for (int i = 0; i < length; i++)
+                //        //{
 
-                    //        //}
-                    //}
-                    //}
-                
+                //        //}
+                //        //foreach (var neurona in perceptron.neuronas)
+                //        //{
+
+                //        //}
+                //}
+                //}
+
             }
             else
             {
-                    MessageBox.Show("Debe inicializar la red para continuar con el entrenamiento",
-                       "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+                MessageBox.Show("Debe inicializar la red para continuar con el entrenamiento",
+                   "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
             }
         }
 
@@ -434,7 +371,7 @@ namespace PerceptronUnicapa
             }
             else 
             {
-                OpenFileDialog d = new OpenFileDialog
+                System.Windows.Forms.OpenFileDialog d = new OpenFileDialog
                 {
                     Title = "Importar archivo (.json)",
                     Filter = "JSON|*.json"
@@ -523,25 +460,32 @@ namespace PerceptronUnicapa
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LineSeries serieErrores = new LineSeries
+            {
+                Title = "Error",
+                Values = Errores,
+                StrokeThickness = 4,
+                //Fill = Brushes.Transparent,
+                PointGeometry = DefaultGeometries.Diamond,
+                PointGeometrySize = 8,
+                DataLabels = false,
+
+            };
+            CartesianErrors.Series.Add(serieErrores);
+        }
+
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
             perceptron = null;
-            comboBoxes.Clear();
-            foreach (var series in chartError.Series)
+                    
+            foreach (var series in CartesianErrors.Series)
             {
-                series.Points.Clear();
+                series.Values.Clear();
             }
-            foreach (var series in chartUmbrales.Series)
-            {
-                series.Points.Clear();
-            }
-            foreach (var series in chartPesos.Series)
-            {
-                series.Points.Clear();
-            }
-            LimpiarDataGrid(dgvTopologiaRed);
-            LimpiarDataGrid(dgvSimulacion);
-            LimpiarDataGrid(dgvPesosyUmbrales);
+            
+                        
             btnInicializarRed.Enabled = true;
             //while (dgvPesosyUmbrales.RowCount > 1)
             //{
@@ -569,10 +513,12 @@ namespace PerceptronUnicapa
 
         private void BtnCargarPatrones_Click(object sender, EventArgs e)
         {
-            OpenFileDialog d = new OpenFileDialog();
+            OpenFileDialog d = new OpenFileDialog
+            {
+                Title = "Importar archivo (.csv)",
+                Filter = "Csv|*.csv"
+            };
             List<String> datos = new List<string>();
-            d.Title = "Importar archivo (.csv)";
-            d.Filter = "Csv|*.csv";
             if (d.ShowDialog() == DialogResult.OK)
             {
                 /// Console.WriteLine(d.FileName);            
@@ -658,19 +604,12 @@ namespace PerceptronUnicapa
                     dgvPatrones.ColumnHeadersHeightSizeMode =
             DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
                     dgvPatrones.Dock = DockStyle.Fill;
-                    chartPesos.Series.Clear();
-                    chartUmbrales.Series.Clear();
-                    for (int i = 0; i < entradas*salidas; i++)
-                    {
-                        chartPesos.Series.Add("Peso: " + i);
-                        chartPesos.Series[i].ChartType = 
-                            System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-                       
-                    }
+                    
+                    chartVariacionRealEsperada.Series.Clear();                    
                     for (int i = 0; i < salidas; i++)
                     {
-                        chartUmbrales.Series.Add("Umbral: "+i);
-                        chartUmbrales.Series[i].ChartType = 
+                        chartVariacionRealEsperada.Series.Add("Umbral: "+i);
+                        chartVariacionRealEsperada.Series[i].ChartType = 
                             System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
                     }
                     txtLog.Text += "Patrones cargados con exito\n";
