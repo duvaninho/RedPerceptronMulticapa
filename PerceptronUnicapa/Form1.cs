@@ -17,10 +17,12 @@ using LiveCharts.Defaults;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using LiveCharts.Wpf;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace PerceptronUnicapa
 {
-    
+
     public partial class Form1 : Form
     {
         #region Dlls para poder hacer el movimiento del Form
@@ -29,7 +31,7 @@ namespace PerceptronUnicapa
 
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
-        
+
         int w = 0;
         int h = 0;
         #endregion
@@ -38,11 +40,15 @@ namespace PerceptronUnicapa
         double[,] matrizSalidas;
         int cantidadEntradas, cantidadSalidas, patrones;
         bool redInicializada, redEntrenada;
-        public ChartValues<ObservablePoint> Errores { get; set; }
-        public ChartValues<ObservablePoint> VariacionSalida { get; set; }
-        Perceptron perceptron;
+        public ChartValues<ObservableValue> Errores { get; set; }
+        public ChartValues<ObservableValue>[] PuntosReales { get; set; }
+        public ChartValues<ObservableValue>[] PuntosDeseados { get; set; }
+        RedNeuronal RedNeuronal;
+        private const int keepRecords = 20;
+        private int VelocidadCharts { get; set; }
+
         //Creamos el delegado 
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -50,20 +56,7 @@ namespace PerceptronUnicapa
             this.MaximizeBox = false;            
             redInicializada = false;
             redEntrenada = false;
-            Errores = new ChartValues<ObservablePoint>();
-            CartesianErrors.Series = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = Errores
-                }
-            };
-            chartVariacionRealEsperada.Titles.Add("Variacion de Umbrales Vs Iteracion");
-            chartVariacionRealEsperada.Titles[0].Font = new Font("Microsoft YaHei UI", 15);
-            chartVariacionRealEsperada.ChartAreas["ChartArea1"].AxisX.MajorGrid.Enabled = false;
-            chartVariacionRealEsperada.ChartAreas["ChartArea1"].AxisY.MajorGrid.Enabled = false;            
-            chartVariacionRealEsperada.ChartAreas["ChartArea1"].AxisX.RoundAxisValues();
-
+            Errores = new ChartValues<ObservableValue>();            
         }
         private void WriteJSON(object objeto, string path)
         {
@@ -72,14 +65,70 @@ namespace PerceptronUnicapa
         }
         private void Plot()
         {
-            Thread.Sleep(200);
-            Errores.Add(new ObservablePoint( perceptron.IteracionesEntrenamiento, perceptron.ErrorEntrenamiento));
-            VariacionSalida = new ChartValues<ObservablePoint>();
-            
+            Errores.Add(new ObservableValue(RedNeuronal.ErrorEntrenamiento));
+            for (int i = 0; i < RedNeuronal.SalidasDeseadas.GetLength(0); i++)
+            {
+                for (int j = 0; j < RedNeuronal.SalidasDeseadas.GetLength(1); j++)
+                {
+
+                    PuntosDeseados[j].Add(new ObservableValue(RedNeuronal.SalidasDeseadas[i, j]));
+                    PuntosReales[j].Add(new ObservableValue(RedNeuronal.SalidasReales[i, j]));
+                    RemoverPuntos(j);
+                }
+            }            
+            Thread.Sleep(VelocidadCharts);
         }
-        private void CorrerHiloPlot()
+
+        private void RemoverPuntos(int j)
         {
-            Task.Factory.StartNew(Plot);
+            var first = PuntosDeseados[j].FirstOrDefault();
+            if (PuntosDeseados[j].Count > keepRecords - 1) PuntosDeseados[j].Remove(first);
+            var _first = PuntosReales[j].FirstOrDefault();
+            if (PuntosReales[j].Count > keepRecords - 1) PuntosReales[j].Remove(_first);
+        }
+
+        private void CrearSeriesGrafica()
+        {
+            PuntosDeseados = new ChartValues<ObservableValue>[matrizSalidas.GetLength(1)];
+            PuntosReales = new ChartValues<ObservableValue>[matrizSalidas.GetLength(1)];
+            LineSeries[] SerieDeseadas = new LineSeries[matrizSalidas.GetLength(1)];
+            LineSeries[] SerieReales = new LineSeries[matrizSalidas.GetLength(1)];
+            for (int i = 0; i < matrizSalidas.GetLength(1); i++)
+            {
+                InicializarSeriesCharts(SerieDeseadas, SerieReales, i);
+            }
+        }
+
+        private void InicializarSeriesCharts(LineSeries[] SerieDeseadas, LineSeries[] SerieReales, int i)
+        {
+            PuntosDeseados[i] = new ChartValues<ObservableValue>();
+            PuntosReales[i] = new ChartValues<ObservableValue>();
+            SerieDeseadas[i] = InicializarSerie(PuntosDeseados[i], "Yd" + (i + 1));
+            SerieReales[i] = InicializarSerie(PuntosReales[i], "Yr" + (i + 1));
+            CartesianVariacionRealDeseada.Series.Add(SerieDeseadas[i]);
+            CartesianVariacionRealDeseada.Series.Add(SerieReales[i]);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LineSeries serieErrores = new LineSeries
+            {
+                Title = "Error de Entrenamiento",
+                Values = Errores,
+                StrokeThickness = 4,
+                Fill = Brushes.Transparent,
+                PointGeometry = DefaultGeometries.None,
+                PointGeometrySize = 8,
+                DataLabels = false,
+
+            };            
+            CartesianErrors.Series.Add(serieErrores);
+            LlenarDatagridTopologia();
+            VelocidadCharts = Convert.ToInt16(numericUpDown1.Value);
+            CartesianErrors.LegendLocation = LegendLocation.Top;
+            CartesianVariacionRealDeseada.LegendLocation = LegendLocation.Top;
+            CartesianVariacionRealDeseada.AnimationsSpeed = TimeSpan.FromMilliseconds(0);
+            CartesianVariacionRealDeseada.Background = Brushes.White;
         }
         private void BtnInicializarRed_Click(object sender, EventArgs e)
         {
@@ -98,21 +147,16 @@ namespace PerceptronUnicapa
                 MessageBox.Show("Ingrese un numero de iteraciones valido",
                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else 
+            else
             {
-                int[] neuronasPorCapa = new int[Convert.ToInt16( nudNumeroCapas.Value)];
+                int[] neuronasPorCapa = new int[Convert.ToInt16(nudNumeroCapas.Value)];
                 int numeroActivaciones = Convert.ToInt16(nudNumeroCapas.Value);
-                int[] activaciones = new int[numeroActivaciones];               
+                int[] activaciones = new int[numeroActivaciones];
                 activaciones[0] = 1;
-                
-                for (int i = 0; i < numeroActivaciones; i++)
-                {
-                    neuronasPorCapa[i] = Convert.ToInt32( dgvTopologiaRed[1, i].Value);
-                    activaciones[i] = comboBoxes[i].Opcion;
-                    
-                }                
+
+                TopologiaCapas(neuronasPorCapa, numeroActivaciones, activaciones);
                 Random random = new Random();
-                perceptron = new Perceptron(this.matrizSalidas, Convert.ToDouble(
+                RedNeuronal = new RedNeuronal(this.matrizSalidas, Convert.ToDouble(
                     nudErrorMaximo.Value), this.patrones, Convert.ToDouble(
                         this.nudRataAprendizaje.Value), Convert.ToInt16(
                      nudNoIteraciones.Value), this.matrizEntradas, random,
@@ -121,7 +165,34 @@ namespace PerceptronUnicapa
                 redInicializada = true;
                 txtLog.Text += "Red Inicalizada con exito\n";
                 txtLog.Text += "_____________________\n";
+                CrearSeriesGrafica();
             }
+        }
+
+        private void TopologiaCapas(int[] neuronasPorCapa, int numeroActivaciones, int[] activaciones)
+        {
+            for (int i = 0; i < numeroActivaciones; i++)
+            {
+                neuronasPorCapa[i] = Convert.ToInt32(dgvTopologiaRed[1, i].Value);
+                activaciones[i] = comboBoxes[i].Opcion;
+
+            }
+        }
+
+        private LineSeries InicializarSerie(
+            ChartValues<ObservableValue> observables, string title)
+        {
+            LineSeries Serie = new LineSeries
+            {
+                Title = title,
+                Values = observables,
+                StrokeThickness = 4,
+                Fill = Brushes.Transparent,
+                PointGeometry = DefaultGeometries.None,
+                PointGeometrySize = 8,
+                DataLabels = false
+            };
+            return Serie;
         }
 
         private void BtnEntrenar_Click(object sender, EventArgs e)
@@ -139,26 +210,16 @@ namespace PerceptronUnicapa
             else if (redInicializada)
             {
 
-                if (perceptron.ErrorEntrenamiento < perceptron.ErrorMaximo)
+                if (RedNeuronal.ErrorEntrenamiento < RedNeuronal.ErrorMaximo)
                 {
-                    MessageBox.Show("La red ha entrenado en la iteracion " + perceptron.IteracionesEntrenamiento,
+                    MessageBox.Show("La red ha entrenado en la iteracion " + RedNeuronal.IteracionesEntrenamiento,
                         "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 else
                 {
-                    perceptron.Entrenar();
-                    Plot();
-                    int iteradorVariacion = 0;
-                    for (int i = 0; i < perceptron.variacionRealDeseada.Length; i++)
-                    {
-                        chartVariacionRealEsperada.Series[iteradorVariacion].Points.AddXY(
-                            perceptron.IteracionesEntrenamiento,
-                            perceptron.variacionRealDeseada[i]);
-                        iteradorVariacion++;
-                    }
-
-
-                    if (!perceptron.Entrenando)
+                    RedNeuronal.Entrenar();
+                    Plot();                    
+                    if (!RedNeuronal.Entrenando)
                     {
                         redEntrenada = true;
 
@@ -199,13 +260,13 @@ namespace PerceptronUnicapa
             }
             else if (redInicializada)
             {
-                while (Aprendio(perceptron))
+                while (Aprendio(RedNeuronal))
                 {
-                    perceptron.Entrenar();
+                    RedNeuronal.Entrenar();
                     
                     Plot();
                 }
-                if (!perceptron.Entrenada)
+                if (!RedNeuronal.Entrenada)
                 {
                     redEntrenada = true;
                     DialogResult result =
@@ -219,7 +280,7 @@ namespace PerceptronUnicapa
                             DialogResult.OK && saveFileDialog1.FileName.Length
                             > 0)
                         {
-                            WriteJSON(perceptron, saveFileDialog1.FileName);
+                            WriteJSON(RedNeuronal, saveFileDialog1.FileName);
                         }
 
                     }
@@ -289,7 +350,7 @@ namespace PerceptronUnicapa
             }
         }
 
-        private static bool Aprendio(Perceptron perceptron)
+        private static bool Aprendio(RedNeuronal perceptron)
         {
             return perceptron.Entrenando && perceptron.IteracionesEntrenamiento <=
                                     perceptron.IteracionesRequeridas;
@@ -382,8 +443,8 @@ namespace PerceptronUnicapa
                     using (StreamReader jsonStream = File.OpenText(d.FileName))
                     {
                         var json = jsonStream.ReadToEnd();
-                        Perceptron perceptronDevuelto = JsonConvert.DeserializeObject<Perceptron>(json);
-                        perceptron = perceptronDevuelto;
+                        RedNeuronal perceptronDevuelto = JsonConvert.DeserializeObject<RedNeuronal>(json);
+                        RedNeuronal = perceptronDevuelto;
                         redInicializada = true;
                         btnInicializarRed.Enabled = false;
                     }
@@ -403,13 +464,18 @@ namespace PerceptronUnicapa
         }
         private void NudNumeroCapas_ValueChanged(object sender, EventArgs e)
         {
+            LlenarDatagridTopologia();
+        }
+
+        private void LlenarDatagridTopologia()
+        {
             LimpiarDataGrid(dgvTopologiaRed);
             int k = 1;
             for (int i = 0; i < nudNumeroCapas.Value; i++)
             {
                 if (i == nudNumeroCapas.Value - 1)
                 {
-                    dgvTopologiaRed.Rows.Add( "Salida",
+                    dgvTopologiaRed.Rows.Add("Salida",
                         "1");
                 }
                 else
@@ -460,32 +526,23 @@ namespace PerceptronUnicapa
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            LineSeries serieErrores = new LineSeries
-            {
-                Title = "Error",
-                Values = Errores,
-                StrokeThickness = 4,
-                //Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.Diamond,
-                PointGeometrySize = 8,
-                DataLabels = false,
-
-            };
-            CartesianErrors.Series.Add(serieErrores);
+            VelocidadCharts = Convert.ToInt16 (numericUpDown1.Value);
         }
 
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            perceptron = null;
+            RedNeuronal = null;
                     
             foreach (var series in CartesianErrors.Series)
             {
                 series.Values.Clear();
             }
-            
-                        
+            foreach (var series in CartesianVariacionRealDeseada.Series)
+            {
+                series.Values.Clear();
+            }                        
             btnInicializarRed.Enabled = true;
             //while (dgvPesosyUmbrales.RowCount > 1)
             //{
@@ -604,14 +661,7 @@ namespace PerceptronUnicapa
                     dgvPatrones.ColumnHeadersHeightSizeMode =
             DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
                     dgvPatrones.Dock = DockStyle.Fill;
-                    
-                    chartVariacionRealEsperada.Series.Clear();                    
-                    for (int i = 0; i < salidas; i++)
-                    {
-                        chartVariacionRealEsperada.Series.Add("Umbral: "+i);
-                        chartVariacionRealEsperada.Series[i].ChartType = 
-                            System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-                    }
+                                        
                     txtLog.Text += "Patrones cargados con exito\n";
                     txtLog.Text += "_____________________\n";
                 }

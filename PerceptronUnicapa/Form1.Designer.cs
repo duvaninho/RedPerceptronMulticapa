@@ -29,28 +29,26 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.bunifuGradientPanel4 = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.CartesianErrors = new LiveCharts.WinForms.CartesianChart();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.chartVariacionRealEsperada = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.CartesianVariacionRealDeseada = new LiveCharts.WinForms.CartesianChart();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.btnContinuar = new Bunifu.Framework.UI.BunifuFlatButton();
             this.btnEntrenar = new Bunifu.Framework.UI.BunifuFlatButton();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.dgvTopologiaRed = new Bunifu.Framework.UI.BunifuCustomDataGrid();
             this.Capa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Neuronas = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -97,9 +95,9 @@
             this.bunifuGradientPanel4.SuspendLayout();
             this.panel9.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chartVariacionRealEsperada)).BeginInit();
             this.panel6.SuspendLayout();
             this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopologiaRed)).BeginInit();
             this.bunifuGradientPanel3.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -183,30 +181,21 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.chartVariacionRealEsperada);
+            this.panel3.Controls.Add(this.CartesianVariacionRealDeseada);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(271, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(701, 514);
             this.panel3.TabIndex = 1;
             // 
-            // chartVariacionRealEsperada
+            // CartesianVariacionRealDeseada
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartVariacionRealEsperada.ChartAreas.Add(chartArea3);
-            this.chartVariacionRealEsperada.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.chartVariacionRealEsperada.Legends.Add(legend3);
-            this.chartVariacionRealEsperada.Location = new System.Drawing.Point(0, 0);
-            this.chartVariacionRealEsperada.Name = "chartVariacionRealEsperada";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chartVariacionRealEsperada.Series.Add(series3);
-            this.chartVariacionRealEsperada.Size = new System.Drawing.Size(701, 514);
-            this.chartVariacionRealEsperada.TabIndex = 0;
-            this.chartVariacionRealEsperada.Text = "Variacion de umbral respecto a la iteracion";
-            this.chartVariacionRealEsperada.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
+            this.CartesianVariacionRealDeseada.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CartesianVariacionRealDeseada.Location = new System.Drawing.Point(0, 0);
+            this.CartesianVariacionRealDeseada.Name = "CartesianVariacionRealDeseada";
+            this.CartesianVariacionRealDeseada.Size = new System.Drawing.Size(701, 514);
+            this.CartesianVariacionRealDeseada.TabIndex = 0;
+            this.CartesianVariacionRealDeseada.Text = "cartesianChart1";
             // 
             // panel6
             // 
@@ -307,6 +296,7 @@
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.numericUpDown1);
             this.panel8.Controls.Add(this.dgvTopologiaRed);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel8.Location = new System.Drawing.Point(1223, 103);
@@ -314,21 +304,46 @@
             this.panel8.Size = new System.Drawing.Size(348, 614);
             this.panel8.TabIndex = 1;
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Location = new System.Drawing.Point(0, 166);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(348, 32);
+            this.numericUpDown1.TabIndex = 10;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
             // dgvTopologiaRed
             // 
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvTopologiaRed.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvTopologiaRed.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTopologiaRed.BackgroundColor = System.Drawing.Color.White;
             this.dgvTopologiaRed.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTopologiaRed.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Honeydew;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTopologiaRed.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Honeydew;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTopologiaRed.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTopologiaRed.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTopologiaRed.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Capa,
@@ -835,19 +850,19 @@
             // 
             // dgvPatrones
             // 
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvPatrones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvPatrones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvPatrones.BackgroundColor = System.Drawing.Color.White;
             this.dgvPatrones.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvPatrones.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Honeydew;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPatrones.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Honeydew;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPatrones.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvPatrones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPatrones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Entradas,
@@ -925,19 +940,19 @@
             // chartErrorvsIteracion
             // 
             this.chartErrorvsIteracion.BorderlineColor = System.Drawing.Color.Black;
-            chartArea4.Name = "ChartArea1";
-            this.chartErrorvsIteracion.ChartAreas.Add(chartArea4);
+            chartArea1.Name = "ChartArea1";
+            this.chartErrorvsIteracion.ChartAreas.Add(chartArea1);
             this.chartErrorvsIteracion.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Name = "Legend1";
-            this.chartErrorvsIteracion.Legends.Add(legend4);
+            legend1.Name = "Legend1";
+            this.chartErrorvsIteracion.Legends.Add(legend1);
             this.chartErrorvsIteracion.Location = new System.Drawing.Point(0, 0);
             this.chartErrorvsIteracion.Name = "chartErrorvsIteracion";
             this.chartErrorvsIteracion.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.EarthTones;
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartErrorvsIteracion.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartErrorvsIteracion.Series.Add(series1);
             this.chartErrorvsIteracion.Size = new System.Drawing.Size(489, 343);
             this.chartErrorvsIteracion.TabIndex = 0;
             this.chartErrorvsIteracion.Text = "Error Por Iteracion";
@@ -961,10 +976,10 @@
             this.bunifuGradientPanel4.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chartVariacionRealEsperada)).EndInit();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopologiaRed)).EndInit();
             this.bunifuGradientPanel3.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
@@ -1017,7 +1032,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartErrorvsIteracion;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartVariacionRealEsperada;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
@@ -1042,6 +1056,8 @@
         private System.Windows.Forms.ComboBox CmbAlgoritmoEntrenamiento;
         private System.Windows.Forms.Label label8;
         private LiveCharts.WinForms.CartesianChart CartesianErrors;
+        private LiveCharts.WinForms.CartesianChart CartesianVariacionRealDeseada;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 

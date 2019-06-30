@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 namespace Utilidades
 {
-    public class Perceptron
+    public class RedNeuronal
     {
         public double[,] SalidasDeseadas { get; set; }
+        public double[,] SalidasReales { get; set; }
         public double[,] Entradas { get; set; }
 
         public double[] MayoresEntradas { get; set; }
@@ -27,8 +28,8 @@ namespace Utilidades
         public double[] variacionRealDeseada { get; set; }
         public double[] ErroresLinealUltimaCapa { get; set; }
 
-        public Perceptron() { }
-        public Perceptron(double[,] salidasDeseadas, double errorMaximo, int patrones,
+        public RedNeuronal() { }
+        public RedNeuronal(double[,] salidasDeseadas, double errorMaximo, int patrones,
             double rataAprendizaje, int iteracionesRequeridas, double[,] entradas,
             Random random, int[] funcionActivacion,int[] neuronasPorCapa, double rataDinamica = 0,
             int BackPropagation=0)
@@ -41,7 +42,7 @@ namespace Utilidades
             CantidadEntradas = entradas.GetLength(1);
             CantidadSalidas = salidasDeseadas.GetLength(1);
             MapEntradas(entradas);
-            MapSalidasDeseadas(salidasDeseadas);
+            MapSalidasDeseadas(salidasDeseadas);            
             this.ErrorMaximo = errorMaximo;
             this.RataAprendizaje = rataAprendizaje;
             this.IteracionesRequeridas = iteracionesRequeridas;
@@ -57,7 +58,8 @@ namespace Utilidades
         }
         private void MapSalidasDeseadas(double[,] salidasDeseadas)
         {
-            this.SalidasDeseadas = salidasDeseadas;            
+            this.SalidasDeseadas = salidasDeseadas;
+            SalidasReales = new double[salidasDeseadas.GetLength(0), salidasDeseadas.GetLength(1)];
         }
         private void MapEntradas(double[,] entradas)
         {
@@ -147,6 +149,7 @@ namespace Utilidades
             for (int i = 0; i < salidasDeCapa.Length; i++)
             {
                 ErroresLinealUltimaCapa[i] = -salidasDeCapa[i] + SalidasDeseadas[indicePatron, i];
+                SalidasReales[indicePatron, i] = salidasDeCapa[i];
                 Console.WriteLine("Error Lienal[" + i + "]: " + ErroresLinealUltimaCapa[i]);
                 errorPatron += Math.Abs(ErroresLinealUltimaCapa[i]);
             }

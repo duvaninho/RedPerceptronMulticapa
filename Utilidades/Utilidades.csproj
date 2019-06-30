@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="Capa.cs" />
     <Compile Include="Neurona.cs" />
-    <Compile Include="Perceptron.cs" />
+    <Compile Include="RedNeuronal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
