@@ -1,4 +1,4 @@
-﻿namespace PerceptronUnicapa
+﻿namespace RedesNeuronales
 {
     partial class Form1
     {
@@ -31,11 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.bunifuGradientPanel4 = new Bunifu.Framework.UI.BunifuGradientPanel();
@@ -48,18 +48,15 @@
             this.btnContinuar = new Bunifu.Framework.UI.BunifuFlatButton();
             this.btnEntrenar = new Bunifu.Framework.UI.BunifuFlatButton();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.btnNuevo = new Bunifu.Framework.UI.BunifuThinButton2();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.dgvTopologiaRed = new Bunifu.Framework.UI.BunifuCustomDataGrid();
             this.Capa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Neuronas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Activacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.bunifuGradientPanel3 = new Bunifu.Framework.UI.BunifuGradientPanel();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.btnNuevo = new Bunifu.Framework.UI.BunifuThinButton2();
-            this.btnSimular = new Bunifu.Framework.UI.BunifuThinButton2();
+            this.btnInicializarRed = new Bunifu.Framework.UI.BunifuThinButton2();
             this.btnCargarPesosyUmbrales = new Bunifu.Framework.UI.BunifuThinButton2();
             this.btnCargarPatrones = new Bunifu.Framework.UI.BunifuThinButton2();
-            this.btnInicializarRed = new Bunifu.Framework.UI.BunifuThinButton2();
             this.bunifuGradientPanel2 = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.txtLog = new System.Windows.Forms.RichTextBox();
@@ -80,16 +77,15 @@
             this.nudNoIteraciones = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dgvPatrones = new Bunifu.Framework.UI.BunifuCustomDataGrid();
-            this.Entradas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Salidas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bunifuGradientPanel1 = new Bunifu.Framework.UI.BunifuGradientPanel();
-            this.label6 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnSimular = new Bunifu.Framework.UI.BunifuThinButton2();
             this.panel2 = new System.Windows.Forms.Panel();
             this.chartErrorvsIteracion = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.Salidas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Entradas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvPatrones = new Bunifu.Framework.UI.BunifuCustomDataGrid();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.bunifuGradientPanel4.SuspendLayout();
@@ -99,8 +95,6 @@
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopologiaRed)).BeginInit();
-            this.bunifuGradientPanel3.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.bunifuGradientPanel2.SuspendLayout();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NudRataDinamica)).BeginInit();
@@ -109,10 +103,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudErrorMaximo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNoIteraciones)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPatrones)).BeginInit();
-            this.bunifuGradientPanel1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartErrorvsIteracion)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPatrones)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -132,9 +126,7 @@
             // 
             this.tabPage1.Controls.Add(this.bunifuGradientPanel4);
             this.tabPage1.Controls.Add(this.panel8);
-            this.tabPage1.Controls.Add(this.bunifuGradientPanel3);
             this.tabPage1.Controls.Add(this.bunifuGradientPanel2);
-            this.tabPage1.Controls.Add(this.bunifuGradientPanel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -155,10 +147,10 @@
             this.bunifuGradientPanel4.GradientBottomRight = System.Drawing.Color.White;
             this.bunifuGradientPanel4.GradientTopLeft = System.Drawing.Color.White;
             this.bunifuGradientPanel4.GradientTopRight = System.Drawing.Color.White;
-            this.bunifuGradientPanel4.Location = new System.Drawing.Point(251, 103);
+            this.bunifuGradientPanel4.Location = new System.Drawing.Point(251, 3);
             this.bunifuGradientPanel4.Name = "bunifuGradientPanel4";
             this.bunifuGradientPanel4.Quality = 10;
-            this.bunifuGradientPanel4.Size = new System.Drawing.Size(972, 614);
+            this.bunifuGradientPanel4.Size = new System.Drawing.Size(972, 841);
             this.bunifuGradientPanel4.TabIndex = 3;
             // 
             // panel9
@@ -167,7 +159,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel9.Location = new System.Drawing.Point(0, 0);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(271, 514);
+            this.panel9.Size = new System.Drawing.Size(455, 432);
             this.panel9.TabIndex = 1;
             // 
             // CartesianErrors
@@ -175,7 +167,7 @@
             this.CartesianErrors.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CartesianErrors.Location = new System.Drawing.Point(0, 0);
             this.CartesianErrors.Name = "CartesianErrors";
-            this.CartesianErrors.Size = new System.Drawing.Size(271, 514);
+            this.CartesianErrors.Size = new System.Drawing.Size(455, 432);
             this.CartesianErrors.TabIndex = 0;
             this.CartesianErrors.Text = "CartesianErrors";
             // 
@@ -183,9 +175,9 @@
             // 
             this.panel3.Controls.Add(this.CartesianVariacionRealDeseada);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(271, 0);
+            this.panel3.Location = new System.Drawing.Point(455, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(701, 514);
+            this.panel3.Size = new System.Drawing.Size(517, 432);
             this.panel3.TabIndex = 1;
             // 
             // CartesianVariacionRealDeseada
@@ -193,7 +185,7 @@
             this.CartesianVariacionRealDeseada.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CartesianVariacionRealDeseada.Location = new System.Drawing.Point(0, 0);
             this.CartesianVariacionRealDeseada.Name = "CartesianVariacionRealDeseada";
-            this.CartesianVariacionRealDeseada.Size = new System.Drawing.Size(701, 514);
+            this.CartesianVariacionRealDeseada.Size = new System.Drawing.Size(517, 432);
             this.CartesianVariacionRealDeseada.TabIndex = 0;
             this.CartesianVariacionRealDeseada.Text = "cartesianChart1";
             // 
@@ -203,9 +195,9 @@
             this.panel6.Controls.Add(this.btnContinuar);
             this.panel6.Controls.Add(this.btnEntrenar);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel6.Location = new System.Drawing.Point(0, 514);
+            this.panel6.Location = new System.Drawing.Point(0, 432);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(972, 100);
+            this.panel6.Size = new System.Drawing.Size(972, 409);
             this.panel6.TabIndex = 1;
             // 
             // label5
@@ -296,13 +288,44 @@
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.btnNuevo);
             this.panel8.Controls.Add(this.numericUpDown1);
             this.panel8.Controls.Add(this.dgvTopologiaRed);
+            this.panel8.Controls.Add(this.btnInicializarRed);
+            this.panel8.Controls.Add(this.btnCargarPesosyUmbrales);
+            this.panel8.Controls.Add(this.btnCargarPatrones);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel8.Location = new System.Drawing.Point(1223, 103);
+            this.panel8.Location = new System.Drawing.Point(1223, 3);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(348, 614);
+            this.panel8.Size = new System.Drawing.Size(348, 841);
             this.panel8.TabIndex = 1;
+            // 
+            // btnNuevo
+            // 
+            this.btnNuevo.ActiveBorderThickness = 1;
+            this.btnNuevo.ActiveCornerRadius = 20;
+            this.btnNuevo.ActiveFillColor = System.Drawing.Color.SeaGreen;
+            this.btnNuevo.ActiveForecolor = System.Drawing.Color.White;
+            this.btnNuevo.ActiveLineColor = System.Drawing.Color.SeaGreen;
+            this.btnNuevo.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnNuevo.BackColor = System.Drawing.Color.Transparent;
+            this.btnNuevo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNuevo.BackgroundImage")));
+            this.btnNuevo.ButtonText = "Nuevo";
+            this.btnNuevo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNuevo.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNuevo.ForeColor = System.Drawing.Color.SeaGreen;
+            this.btnNuevo.IdleBorderThickness = 1;
+            this.btnNuevo.IdleCornerRadius = 20;
+            this.btnNuevo.IdleFillColor = System.Drawing.Color.White;
+            this.btnNuevo.IdleForecolor = System.Drawing.Color.SeaGreen;
+            this.btnNuevo.IdleLineColor = System.Drawing.Color.SeaGreen;
+            this.btnNuevo.Location = new System.Drawing.Point(28, 607);
+            this.btnNuevo.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.btnNuevo.Name = "btnNuevo";
+            this.btnNuevo.Size = new System.Drawing.Size(253, 68);
+            this.btnNuevo.TabIndex = 3;
+            this.btnNuevo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnNuevo.Click += new System.EventHandler(this.BtnNuevo_Click);
             // 
             // numericUpDown1
             // 
@@ -380,88 +403,32 @@
             "Escalon"});
             this.Activacion.Name = "Activacion";
             // 
-            // bunifuGradientPanel3
+            // btnInicializarRed
             // 
-            this.bunifuGradientPanel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel3.BackgroundImage")));
-            this.bunifuGradientPanel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuGradientPanel3.Controls.Add(this.panel7);
-            this.bunifuGradientPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.bunifuGradientPanel3.GradientBottomLeft = System.Drawing.Color.White;
-            this.bunifuGradientPanel3.GradientBottomRight = System.Drawing.Color.White;
-            this.bunifuGradientPanel3.GradientTopLeft = System.Drawing.Color.White;
-            this.bunifuGradientPanel3.GradientTopRight = System.Drawing.Color.White;
-            this.bunifuGradientPanel3.Location = new System.Drawing.Point(251, 717);
-            this.bunifuGradientPanel3.Name = "bunifuGradientPanel3";
-            this.bunifuGradientPanel3.Quality = 10;
-            this.bunifuGradientPanel3.Size = new System.Drawing.Size(1320, 127);
-            this.bunifuGradientPanel3.TabIndex = 2;
-            // 
-            // panel7
-            // 
-            this.panel7.Controls.Add(this.btnNuevo);
-            this.panel7.Controls.Add(this.btnSimular);
-            this.panel7.Controls.Add(this.btnCargarPesosyUmbrales);
-            this.panel7.Controls.Add(this.btnCargarPatrones);
-            this.panel7.Controls.Add(this.btnInicializarRed);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1320, 127);
-            this.panel7.TabIndex = 2;
-            // 
-            // btnNuevo
-            // 
-            this.btnNuevo.ActiveBorderThickness = 1;
-            this.btnNuevo.ActiveCornerRadius = 20;
-            this.btnNuevo.ActiveFillColor = System.Drawing.Color.SeaGreen;
-            this.btnNuevo.ActiveForecolor = System.Drawing.Color.White;
-            this.btnNuevo.ActiveLineColor = System.Drawing.Color.SeaGreen;
-            this.btnNuevo.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.btnNuevo.BackColor = System.Drawing.Color.Transparent;
-            this.btnNuevo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNuevo.BackgroundImage")));
-            this.btnNuevo.ButtonText = "Nuevo";
-            this.btnNuevo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNuevo.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNuevo.ForeColor = System.Drawing.Color.SeaGreen;
-            this.btnNuevo.IdleBorderThickness = 1;
-            this.btnNuevo.IdleCornerRadius = 20;
-            this.btnNuevo.IdleFillColor = System.Drawing.Color.White;
-            this.btnNuevo.IdleForecolor = System.Drawing.Color.SeaGreen;
-            this.btnNuevo.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnNuevo.Location = new System.Drawing.Point(1031, 25);
-            this.btnNuevo.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
-            this.btnNuevo.Name = "btnNuevo";
-            this.btnNuevo.Size = new System.Drawing.Size(253, 68);
-            this.btnNuevo.TabIndex = 3;
-            this.btnNuevo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnNuevo.Click += new System.EventHandler(this.BtnNuevo_Click);
-            // 
-            // btnSimular
-            // 
-            this.btnSimular.ActiveBorderThickness = 1;
-            this.btnSimular.ActiveCornerRadius = 20;
-            this.btnSimular.ActiveFillColor = System.Drawing.Color.SeaGreen;
-            this.btnSimular.ActiveForecolor = System.Drawing.Color.White;
-            this.btnSimular.ActiveLineColor = System.Drawing.Color.SeaGreen;
-            this.btnSimular.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnSimular.BackColor = System.Drawing.Color.Transparent;
-            this.btnSimular.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSimular.BackgroundImage")));
-            this.btnSimular.ButtonText = "Simular";
-            this.btnSimular.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSimular.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSimular.ForeColor = System.Drawing.Color.SeaGreen;
-            this.btnSimular.IdleBorderThickness = 1;
-            this.btnSimular.IdleCornerRadius = 20;
-            this.btnSimular.IdleFillColor = System.Drawing.Color.White;
-            this.btnSimular.IdleForecolor = System.Drawing.Color.SeaGreen;
-            this.btnSimular.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnSimular.Location = new System.Drawing.Point(773, 25);
-            this.btnSimular.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
-            this.btnSimular.Name = "btnSimular";
-            this.btnSimular.Size = new System.Drawing.Size(253, 68);
-            this.btnSimular.TabIndex = 2;
-            this.btnSimular.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnSimular.Click += new System.EventHandler(this.BtnSimular_Click);
+            this.btnInicializarRed.ActiveBorderThickness = 1;
+            this.btnInicializarRed.ActiveCornerRadius = 20;
+            this.btnInicializarRed.ActiveFillColor = System.Drawing.Color.SeaGreen;
+            this.btnInicializarRed.ActiveForecolor = System.Drawing.Color.White;
+            this.btnInicializarRed.ActiveLineColor = System.Drawing.Color.SeaGreen;
+            this.btnInicializarRed.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnInicializarRed.BackColor = System.Drawing.Color.Transparent;
+            this.btnInicializarRed.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInicializarRed.BackgroundImage")));
+            this.btnInicializarRed.ButtonText = "Inicializar Red";
+            this.btnInicializarRed.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInicializarRed.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInicializarRed.ForeColor = System.Drawing.Color.SeaGreen;
+            this.btnInicializarRed.IdleBorderThickness = 1;
+            this.btnInicializarRed.IdleCornerRadius = 20;
+            this.btnInicializarRed.IdleFillColor = System.Drawing.Color.White;
+            this.btnInicializarRed.IdleForecolor = System.Drawing.Color.SeaGreen;
+            this.btnInicializarRed.IdleLineColor = System.Drawing.Color.SeaGreen;
+            this.btnInicializarRed.Location = new System.Drawing.Point(28, 514);
+            this.btnInicializarRed.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.btnInicializarRed.Name = "btnInicializarRed";
+            this.btnInicializarRed.Size = new System.Drawing.Size(253, 68);
+            this.btnInicializarRed.TabIndex = 1;
+            this.btnInicializarRed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnInicializarRed.Click += new System.EventHandler(this.BtnInicializarRed_Click);
             // 
             // btnCargarPesosyUmbrales
             // 
@@ -482,7 +449,7 @@
             this.btnCargarPesosyUmbrales.IdleFillColor = System.Drawing.Color.White;
             this.btnCargarPesosyUmbrales.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnCargarPesosyUmbrales.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnCargarPesosyUmbrales.Location = new System.Drawing.Point(263, 25);
+            this.btnCargarPesosyUmbrales.Location = new System.Drawing.Point(28, 432);
             this.btnCargarPesosyUmbrales.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.btnCargarPesosyUmbrales.Name = "btnCargarPesosyUmbrales";
             this.btnCargarPesosyUmbrales.Size = new System.Drawing.Size(253, 68);
@@ -509,40 +476,13 @@
             this.btnCargarPatrones.IdleFillColor = System.Drawing.Color.White;
             this.btnCargarPatrones.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnCargarPatrones.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnCargarPatrones.Location = new System.Drawing.Point(5, 25);
+            this.btnCargarPatrones.Location = new System.Drawing.Point(28, 350);
             this.btnCargarPatrones.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
             this.btnCargarPatrones.Name = "btnCargarPatrones";
             this.btnCargarPatrones.Size = new System.Drawing.Size(253, 68);
             this.btnCargarPatrones.TabIndex = 0;
             this.btnCargarPatrones.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnCargarPatrones.Click += new System.EventHandler(this.BtnCargarPatrones_Click);
-            // 
-            // btnInicializarRed
-            // 
-            this.btnInicializarRed.ActiveBorderThickness = 1;
-            this.btnInicializarRed.ActiveCornerRadius = 20;
-            this.btnInicializarRed.ActiveFillColor = System.Drawing.Color.SeaGreen;
-            this.btnInicializarRed.ActiveForecolor = System.Drawing.Color.White;
-            this.btnInicializarRed.ActiveLineColor = System.Drawing.Color.SeaGreen;
-            this.btnInicializarRed.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnInicializarRed.BackColor = System.Drawing.Color.Transparent;
-            this.btnInicializarRed.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInicializarRed.BackgroundImage")));
-            this.btnInicializarRed.ButtonText = "Inicializar Red";
-            this.btnInicializarRed.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnInicializarRed.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInicializarRed.ForeColor = System.Drawing.Color.SeaGreen;
-            this.btnInicializarRed.IdleBorderThickness = 1;
-            this.btnInicializarRed.IdleCornerRadius = 20;
-            this.btnInicializarRed.IdleFillColor = System.Drawing.Color.White;
-            this.btnInicializarRed.IdleForecolor = System.Drawing.Color.SeaGreen;
-            this.btnInicializarRed.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnInicializarRed.Location = new System.Drawing.Point(518, 25);
-            this.btnInicializarRed.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
-            this.btnInicializarRed.Name = "btnInicializarRed";
-            this.btnInicializarRed.Size = new System.Drawing.Size(253, 68);
-            this.btnInicializarRed.TabIndex = 1;
-            this.btnInicializarRed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnInicializarRed.Click += new System.EventHandler(this.BtnInicializarRed_Click);
             // 
             // bunifuGradientPanel2
             // 
@@ -555,10 +495,10 @@
             this.bunifuGradientPanel2.GradientBottomRight = System.Drawing.Color.White;
             this.bunifuGradientPanel2.GradientTopLeft = System.Drawing.Color.White;
             this.bunifuGradientPanel2.GradientTopRight = System.Drawing.Color.White;
-            this.bunifuGradientPanel2.Location = new System.Drawing.Point(3, 103);
+            this.bunifuGradientPanel2.Location = new System.Drawing.Point(3, 3);
             this.bunifuGradientPanel2.Name = "bunifuGradientPanel2";
             this.bunifuGradientPanel2.Quality = 10;
-            this.bunifuGradientPanel2.Size = new System.Drawing.Size(248, 741);
+            this.bunifuGradientPanel2.Size = new System.Drawing.Size(248, 841);
             this.bunifuGradientPanel2.TabIndex = 1;
             // 
             // panel5
@@ -570,9 +510,6 @@
             this.panel5.Controls.Add(this.NudRataDinamica);
             this.panel5.Controls.Add(this.label7);
             this.panel5.Controls.Add(this.btnBorrarLog);
-            this.panel5.Controls.Add(this.lblPatrones);
-            this.panel5.Controls.Add(this.lblSalidas);
-            this.panel5.Controls.Add(this.lblEntradas);
             this.panel5.Controls.Add(this.nudNumeroCapas);
             this.panel5.Controls.Add(this.label1);
             this.panel5.Controls.Add(this.nudRataAprendizaje);
@@ -581,10 +518,13 @@
             this.panel5.Controls.Add(this.label3);
             this.panel5.Controls.Add(this.nudNoIteraciones);
             this.panel5.Controls.Add(this.label4);
+            this.panel5.Controls.Add(this.lblPatrones);
+            this.panel5.Controls.Add(this.lblSalidas);
+            this.panel5.Controls.Add(this.lblEntradas);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(0, 166);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(248, 575);
+            this.panel5.Size = new System.Drawing.Size(248, 675);
             this.panel5.TabIndex = 12;
             // 
             // txtLog
@@ -595,7 +535,7 @@
             this.txtLog.Location = new System.Drawing.Point(0, 418);
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
-            this.txtLog.Size = new System.Drawing.Size(248, 116);
+            this.txtLog.Size = new System.Drawing.Size(248, 216);
             this.txtLog.TabIndex = 11;
             this.txtLog.Text = "";
             // 
@@ -676,7 +616,7 @@
             this.btnBorrarLog.IdleFillColor = System.Drawing.Color.White;
             this.btnBorrarLog.IdleForecolor = System.Drawing.Color.SeaGreen;
             this.btnBorrarLog.IdleLineColor = System.Drawing.Color.SeaGreen;
-            this.btnBorrarLog.Location = new System.Drawing.Point(0, 534);
+            this.btnBorrarLog.Location = new System.Drawing.Point(0, 634);
             this.btnBorrarLog.Margin = new System.Windows.Forms.Padding(5);
             this.btnBorrarLog.Name = "btnBorrarLog";
             this.btnBorrarLog.Size = new System.Drawing.Size(248, 41);
@@ -689,7 +629,7 @@
             this.lblPatrones.AutoSize = true;
             this.lblPatrones.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblPatrones.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPatrones.Location = new System.Drawing.Point(0, 278);
+            this.lblPatrones.Location = new System.Drawing.Point(0, 50);
             this.lblPatrones.Name = "lblPatrones";
             this.lblPatrones.Size = new System.Drawing.Size(93, 25);
             this.lblPatrones.TabIndex = 0;
@@ -700,7 +640,7 @@
             this.lblSalidas.AutoSize = true;
             this.lblSalidas.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblSalidas.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSalidas.Location = new System.Drawing.Point(0, 253);
+            this.lblSalidas.Location = new System.Drawing.Point(0, 25);
             this.lblSalidas.Name = "lblSalidas";
             this.lblSalidas.Size = new System.Drawing.Size(76, 25);
             this.lblSalidas.TabIndex = 2;
@@ -711,7 +651,7 @@
             this.lblEntradas.AutoSize = true;
             this.lblEntradas.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblEntradas.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEntradas.Location = new System.Drawing.Point(0, 228);
+            this.lblEntradas.Location = new System.Drawing.Point(0, 0);
             this.lblEntradas.Name = "lblEntradas";
             this.lblEntradas.Size = new System.Drawing.Size(91, 25);
             this.lblEntradas.TabIndex = 1;
@@ -721,7 +661,7 @@
             // 
             this.nudNumeroCapas.Dock = System.Windows.Forms.DockStyle.Top;
             this.nudNumeroCapas.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudNumeroCapas.Location = new System.Drawing.Point(0, 196);
+            this.nudNumeroCapas.Location = new System.Drawing.Point(0, 271);
             this.nudNumeroCapas.Name = "nudNumeroCapas";
             this.nudNumeroCapas.Size = new System.Drawing.Size(248, 32);
             this.nudNumeroCapas.TabIndex = 12;
@@ -738,7 +678,7 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label1.Location = new System.Drawing.Point(0, 171);
+            this.label1.Location = new System.Drawing.Point(0, 246);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(178, 25);
             this.label1.TabIndex = 3;
@@ -749,7 +689,7 @@
             this.nudRataAprendizaje.DecimalPlaces = 5;
             this.nudRataAprendizaje.Dock = System.Windows.Forms.DockStyle.Top;
             this.nudRataAprendizaje.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudRataAprendizaje.Location = new System.Drawing.Point(0, 139);
+            this.nudRataAprendizaje.Location = new System.Drawing.Point(0, 214);
             this.nudRataAprendizaje.Maximum = new decimal(new int[] {
             1,
             0,
@@ -770,7 +710,7 @@
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
             this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label2.Location = new System.Drawing.Point(0, 114);
+            this.label2.Location = new System.Drawing.Point(0, 189);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(196, 25);
             this.label2.TabIndex = 4;
@@ -781,7 +721,7 @@
             this.nudErrorMaximo.DecimalPlaces = 5;
             this.nudErrorMaximo.Dock = System.Windows.Forms.DockStyle.Top;
             this.nudErrorMaximo.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudErrorMaximo.Location = new System.Drawing.Point(0, 82);
+            this.nudErrorMaximo.Location = new System.Drawing.Point(0, 157);
             this.nudErrorMaximo.Maximum = new decimal(new int[] {
             1,
             0,
@@ -802,7 +742,7 @@
             this.label3.Dock = System.Windows.Forms.DockStyle.Top;
             this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label3.Location = new System.Drawing.Point(0, 57);
+            this.label3.Location = new System.Drawing.Point(0, 132);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(136, 25);
             this.label3.TabIndex = 5;
@@ -812,7 +752,7 @@
             // 
             this.nudNoIteraciones.Dock = System.Windows.Forms.DockStyle.Top;
             this.nudNoIteraciones.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nudNoIteraciones.Location = new System.Drawing.Point(0, 25);
+            this.nudNoIteraciones.Location = new System.Drawing.Point(0, 100);
             this.nudNoIteraciones.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -833,7 +773,7 @@
             this.label4.Dock = System.Windows.Forms.DockStyle.Top;
             this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Location = new System.Drawing.Point(0, 75);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(142, 25);
             this.label4.TabIndex = 6;
@@ -848,76 +788,9 @@
             this.panel1.Size = new System.Drawing.Size(248, 166);
             this.panel1.TabIndex = 11;
             // 
-            // dgvPatrones
-            // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvPatrones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvPatrones.BackgroundColor = System.Drawing.Color.White;
-            this.dgvPatrones.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPatrones.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.SeaGreen;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Honeydew;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPatrones.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvPatrones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPatrones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Entradas,
-            this.Salidas});
-            this.dgvPatrones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvPatrones.DoubleBuffered = true;
-            this.dgvPatrones.EnableHeadersVisualStyles = false;
-            this.dgvPatrones.HeaderBgColor = System.Drawing.Color.SeaGreen;
-            this.dgvPatrones.HeaderForeColor = System.Drawing.Color.Honeydew;
-            this.dgvPatrones.Location = new System.Drawing.Point(0, 0);
-            this.dgvPatrones.Name = "dgvPatrones";
-            this.dgvPatrones.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvPatrones.Size = new System.Drawing.Size(248, 166);
-            this.dgvPatrones.TabIndex = 0;
-            // 
-            // Entradas
-            // 
-            this.Entradas.HeaderText = "Entradas";
-            this.Entradas.Name = "Entradas";
-            // 
-            // Salidas
-            // 
-            this.Salidas.HeaderText = "Salidas";
-            this.Salidas.Name = "Salidas";
-            // 
-            // bunifuGradientPanel1
-            // 
-            this.bunifuGradientPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel1.BackgroundImage")));
-            this.bunifuGradientPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuGradientPanel1.Controls.Add(this.label6);
-            this.bunifuGradientPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bunifuGradientPanel1.GradientBottomLeft = System.Drawing.Color.Green;
-            this.bunifuGradientPanel1.GradientBottomRight = System.Drawing.Color.SeaGreen;
-            this.bunifuGradientPanel1.GradientTopLeft = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(92)))), ((int)(((byte)(57)))));
-            this.bunifuGradientPanel1.GradientTopRight = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(139)))), ((int)(((byte)(86)))));
-            this.bunifuGradientPanel1.Location = new System.Drawing.Point(3, 3);
-            this.bunifuGradientPanel1.Name = "bunifuGradientPanel1";
-            this.bunifuGradientPanel1.Quality = 10;
-            this.bunifuGradientPanel1.Size = new System.Drawing.Size(1568, 100);
-            this.bunifuGradientPanel1.TabIndex = 0;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label6.Font = new System.Drawing.Font("Microsoft YaHei UI", 48F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(0, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(456, 83);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Red Neuronal";
-            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnSimular);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -925,6 +798,32 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Fase de Simulacion";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnSimular
+            // 
+            this.btnSimular.ActiveBorderThickness = 1;
+            this.btnSimular.ActiveCornerRadius = 20;
+            this.btnSimular.ActiveFillColor = System.Drawing.Color.SeaGreen;
+            this.btnSimular.ActiveForecolor = System.Drawing.Color.White;
+            this.btnSimular.ActiveLineColor = System.Drawing.Color.SeaGreen;
+            this.btnSimular.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.btnSimular.BackColor = System.Drawing.Color.Transparent;
+            this.btnSimular.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSimular.BackgroundImage")));
+            this.btnSimular.ButtonText = "Simular";
+            this.btnSimular.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSimular.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSimular.ForeColor = System.Drawing.Color.SeaGreen;
+            this.btnSimular.IdleBorderThickness = 1;
+            this.btnSimular.IdleCornerRadius = 20;
+            this.btnSimular.IdleFillColor = System.Drawing.Color.White;
+            this.btnSimular.IdleForecolor = System.Drawing.Color.SeaGreen;
+            this.btnSimular.IdleLineColor = System.Drawing.Color.SeaGreen;
+            this.btnSimular.Location = new System.Drawing.Point(661, 389);
+            this.btnSimular.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.btnSimular.Name = "btnSimular";
+            this.btnSimular.Size = new System.Drawing.Size(253, 68);
+            this.btnSimular.TabIndex = 3;
+            this.btnSimular.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
             // 
@@ -961,6 +860,46 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // Salidas
+            // 
+            this.Salidas.HeaderText = "Salidas";
+            this.Salidas.Name = "Salidas";
+            // 
+            // Entradas
+            // 
+            this.Entradas.HeaderText = "Entradas";
+            this.Entradas.Name = "Entradas";
+            // 
+            // dgvPatrones
+            // 
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvPatrones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvPatrones.BackgroundColor = System.Drawing.Color.White;
+            this.dgvPatrones.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvPatrones.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.SeaGreen;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Honeydew;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPatrones.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvPatrones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPatrones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Entradas,
+            this.Salidas});
+            this.dgvPatrones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvPatrones.DoubleBuffered = true;
+            this.dgvPatrones.EnableHeadersVisualStyles = false;
+            this.dgvPatrones.HeaderBgColor = System.Drawing.Color.SeaGreen;
+            this.dgvPatrones.HeaderForeColor = System.Drawing.Color.Honeydew;
+            this.dgvPatrones.Location = new System.Drawing.Point(0, 0);
+            this.dgvPatrones.Name = "dgvPatrones";
+            this.dgvPatrones.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvPatrones.Size = new System.Drawing.Size(248, 166);
+            this.dgvPatrones.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -981,8 +920,6 @@
             this.panel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTopologiaRed)).EndInit();
-            this.bunifuGradientPanel3.ResumeLayout(false);
-            this.panel7.ResumeLayout(false);
             this.bunifuGradientPanel2.ResumeLayout(false);
             this.bunifuGradientPanel2.PerformLayout();
             this.panel5.ResumeLayout(false);
@@ -993,11 +930,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudErrorMaximo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNoIteraciones)).EndInit();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPatrones)).EndInit();
-            this.bunifuGradientPanel1.ResumeLayout(false);
-            this.bunifuGradientPanel1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartErrorvsIteracion)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPatrones)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1008,7 +944,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private Bunifu.Framework.UI.BunifuGradientPanel bunifuGradientPanel4;
-        private Bunifu.Framework.UI.BunifuGradientPanel bunifuGradientPanel3;
         private Bunifu.Framework.UI.BunifuGradientPanel bunifuGradientPanel2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
@@ -1017,12 +952,10 @@
         private System.Windows.Forms.Label lblSalidas;
         private System.Windows.Forms.Label lblEntradas;
         private System.Windows.Forms.Label lblPatrones;
-        private Bunifu.Framework.UI.BunifuGradientPanel bunifuGradientPanel1;
         private Bunifu.Framework.UI.BunifuThinButton2 btnInicializarRed;
         private Bunifu.Framework.UI.BunifuThinButton2 btnCargarPatrones;
         private System.Windows.Forms.NumericUpDown nudRataAprendizaje;
         private System.Windows.Forms.Panel panel1;
-        private Bunifu.Framework.UI.BunifuCustomDataGrid dgvPatrones;
         private System.Windows.Forms.NumericUpDown nudNoIteraciones;
         private System.Windows.Forms.NumericUpDown nudErrorMaximo;
         private Bunifu.Framework.UI.BunifuFlatButton btnContinuar;
@@ -1034,18 +967,13 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RichTextBox txtLog;
-        private System.Windows.Forms.Panel panel7;
-        private Bunifu.Framework.UI.BunifuThinButton2 btnSimular;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Panel panel9;
         private Bunifu.Framework.UI.BunifuThinButton2 btnCargarPesosyUmbrales;
         private Bunifu.Framework.UI.BunifuThinButton2 btnNuevo;
         private Bunifu.Framework.UI.BunifuThinButton2 btnBorrarLog;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Entradas;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Salidas;
         private Bunifu.Framework.UI.BunifuCustomDataGrid dgvTopologiaRed;
         private System.Windows.Forms.NumericUpDown nudNumeroCapas;
         private System.Windows.Forms.DataGridViewTextBoxColumn Capa;
@@ -1058,6 +986,10 @@
         private LiveCharts.WinForms.CartesianChart CartesianErrors;
         private LiveCharts.WinForms.CartesianChart CartesianVariacionRealDeseada;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private Bunifu.Framework.UI.BunifuThinButton2 btnSimular;
+        private Bunifu.Framework.UI.BunifuCustomDataGrid dgvPatrones;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Entradas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Salidas;
     }
 }
 

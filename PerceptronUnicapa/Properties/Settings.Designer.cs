@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PerceptronUnicapa.Properties
+namespace RedesNeuronales.Properties
 {
 
 

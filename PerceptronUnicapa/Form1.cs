@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 
-namespace PerceptronUnicapa
+namespace RedesNeuronales
 {
 
     public partial class Form1 : Form
@@ -52,7 +52,7 @@ namespace PerceptronUnicapa
         public Form1()
         {
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;
+            //this.WindowState = FormWindowState.Maximized;
             this.MaximizeBox = false;            
             redInicializada = false;
             redEntrenada = false;
@@ -129,6 +129,10 @@ namespace PerceptronUnicapa
             CartesianVariacionRealDeseada.LegendLocation = LegendLocation.Top;
             CartesianVariacionRealDeseada.AnimationsSpeed = TimeSpan.FromMilliseconds(0);
             CartesianVariacionRealDeseada.Background = Brushes.White;
+            
+            dgvPatrones.ColumnHeadersHeightSizeMode =
+                DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvPatrones.Dock = DockStyle.Fill;
         }
         private void BtnInicializarRed_Click(object sender, EventArgs e)
         {
@@ -188,8 +192,8 @@ namespace PerceptronUnicapa
                 Values = observables,
                 StrokeThickness = 4,
                 Fill = Brushes.Transparent,
-                PointGeometry = DefaultGeometries.None,
-                PointGeometrySize = 8,
+                PointGeometry = DefaultGeometries.Triangle,
+                PointGeometrySize = 7,
                 DataLabels = false
             };
             return Serie;
@@ -197,10 +201,10 @@ namespace PerceptronUnicapa
 
         private void BtnEntrenar_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew(Entrenar);
+            EntrenarConPaso();
         }
 
-        private void Entrenar()
+        private void EntrenarConPaso()
         {
             if (patrones == 0)
             {
@@ -209,22 +213,16 @@ namespace PerceptronUnicapa
             }
             else if (redInicializada)
             {
-
                 if (RedNeuronal.ErrorEntrenamiento < RedNeuronal.ErrorMaximo)
                 {
                     MessageBox.Show("La red ha entrenado en la iteracion " + RedNeuronal.IteracionesEntrenamiento,
                         "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    GuardarTopologia();
                 }
                 else
                 {
                     RedNeuronal.Entrenar();
-                    Plot();                    
-                    if (!RedNeuronal.Entrenando)
-                    {
-                        redEntrenada = true;
-
-                    }
-
+                    Plot();
                 }
 
             }
@@ -248,7 +246,8 @@ namespace PerceptronUnicapa
         }
         private void BtnContinuar_Click(object sender, EventArgs e)
         {
-            Task.Factory.StartNew( Continuar);
+            Continuar();
+            GuardarTopologia();
         }
 
         private void Continuar()
@@ -260,87 +259,8 @@ namespace PerceptronUnicapa
             }
             else if (redInicializada)
             {
-                while (Aprendio(RedNeuronal))
-                {
-                    RedNeuronal.Entrenar();
-                    
-                    Plot();
-                }
-                if (!RedNeuronal.Entrenada)
-                {
-                    redEntrenada = true;
-                    DialogResult result =
-                    MessageBox.Show("\tLa Red Ha entrenado.\n¿Desea guardar " +
-                        "pesos y umbrales?", "Informacion", MessageBoxButtons
-                        .YesNoCancel, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
-                    {
-                        saveFileDialog1.Filter = "json files (*.json)|*.json";
-                        if (saveFileDialog1.ShowDialog() ==
-                            DialogResult.OK && saveFileDialog1.FileName.Length
-                            > 0)
-                        {
-                            WriteJSON(RedNeuronal, saveFileDialog1.FileName);
-                        }
-
-                    }
-
-                }
-                //else
-                //{
-                //    redEntrenada = false;
-                //    DialogResult result =
-                //    MessageBox.Show("\tLa Red no alcanzó a entrenar.\n¿Desea guardar " +
-                //        "pesos y umbrales?", "Informacion", MessageBoxButtons
-                //        .YesNoCancel, MessageBoxIcon.Question);
-                //    if (result == DialogResult.Yes)
-                //    {
-                //        saveFileDialog1.Filter = "csv files (*.csv)|*.csv";
-                //        if (saveFileDialog1.ShowDialog() ==
-                //            DialogResult.OK && saveFileDialog1.FileName.Length
-                //            > 0)
-                //        {
-                //            bool band = false;
-                //            try
-                //            {
-                //                FileInfo fileInfo = new FileInfo(saveFileDialog1.FileName);
-                //                StreamWriter writer = fileInfo.CreateText();
-                //                string header = "";
-                //                for (int i = 0; i < cantidadEntradas; i++)
-                //                {
-                //                    header += "peso" + i + ";";
-                //                }
-                //                header += "umbral";
-                //                writer.WriteLine(header);
-                //                foreach (var neurona in perceptron.neuronas)
-                //                {
-                //                    string cadena = "";
-                //                    for (int i = 0; i < neurona.pesosSimulacion.Length; i++)
-                //                    {
-                //                        cadena += neurona.pesosSimulacion[i] + ";";
-                //                    }
-                //                    cadena += neurona.umbralSimulacion;
-                //                    writer.WriteLine(cadena);
-                //                }
-                //                writer.Close();
-                //            }
-                //            catch (Exception)
-                //            {
-
-                //                throw;
-                //            }
-                //        }
-                //        //for (int i = 0; i < length; i++)
-                //        //{
-
-                //        //}
-                //        //foreach (var neurona in perceptron.neuronas)
-                //        //{
-
-                //        //}
-                //}
-                //}
-
+                Task.Factory.StartNew(FitRedReuronal);
+                
             }
             else
             {
@@ -349,11 +269,58 @@ namespace PerceptronUnicapa
 
             }
         }
-
-        private static bool Aprendio(RedNeuronal perceptron)
+        private void FitRedReuronal()
         {
-            return perceptron.Entrenando && perceptron.IteracionesEntrenamiento <=
-                                    perceptron.IteracionesRequeridas;
+            while (Entrenando())
+            {
+                RedNeuronal.Entrenar();
+
+                Plot();
+            }
+        }
+
+        private void GuardarTopologia()
+        {
+            string mensaje = "";
+            mensaje = Entreno();
+            DialogResult result =
+                MessageBox.Show(mensaje, "Informacion", MessageBoxButtons
+                    .YesNoCancel, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                saveFileDialog1.Filter = "json files (*.json)|*.json";
+                if (saveFileDialog1.ShowDialog() ==
+                    DialogResult.OK && saveFileDialog1.FileName.Length
+                    > 0)
+                {
+                    WriteJSON(RedNeuronal, saveFileDialog1.FileName);
+                }
+            }
+
+        }
+
+        private string Entreno()
+        {
+            string mensaje;
+            if (!RedNeuronal.Entrenando)
+            {
+                mensaje = "La Red Ha entrenado.\n¿Desea guardar " +
+                    "pesos y umbrales?";
+                redEntrenada = true;
+            }
+            else
+            {
+                mensaje = "La Red no alcanzo el error de entrenamiento requerido.\n¿Desea guardar " +
+                    "pesos y umbrales?";
+                redEntrenada = false;
+            }
+
+            return mensaje;
+        }
+
+        private bool Entrenando()
+        {
+            return RedNeuronal.Entrenando && RedNeuronal.IteracionesEntrenamiento < RedNeuronal.IteracionesRequeridas;
         }
 
         private void BtnSimular_Click(object sender, EventArgs e)
@@ -432,7 +399,7 @@ namespace PerceptronUnicapa
             }
             else 
             {
-                System.Windows.Forms.OpenFileDialog d = new OpenFileDialog
+                OpenFileDialog d = new OpenFileDialog
                 {
                     Title = "Importar archivo (.json)",
                     Filter = "JSON|*.json"
@@ -446,11 +413,11 @@ namespace PerceptronUnicapa
                         RedNeuronal perceptronDevuelto = JsonConvert.DeserializeObject<RedNeuronal>(json);
                         RedNeuronal = perceptronDevuelto;
                         redInicializada = true;
-                        btnInicializarRed.Enabled = false;
+                        dgvTopologiaRed.Enabled = false;
+                        nudNumeroCapas.Enabled = false;
                     }
                 }
-            }
-            
+            }            
         }
 
         private void BtnBorrarLog_Click(object sender, EventArgs e)
@@ -533,29 +500,19 @@ namespace PerceptronUnicapa
 
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            RedNeuronal = null;
-                    
+            RedNeuronal = null;                    
             foreach (var series in CartesianErrors.Series)
             {
                 series.Values.Clear();
             }
-            foreach (var series in CartesianVariacionRealDeseada.Series)
-            {
-                series.Values.Clear();
-            }                        
+            //foreach (var series in CartesianVariacionRealDeseada.Series)
+            //{
+            //    series.Values.Clear();
+            //}  
+            CartesianVariacionRealDeseada.Series.Clear();
             btnInicializarRed.Enabled = true;
-            //while (dgvPesosyUmbrales.RowCount > 1)
-            //{
-
-            //    dgvPesosyUmbrales.Rows.Remove(dgvPesosyUmbrales.CurrentRow);
-
-            //}
-            //while (dgvSimulacion.RowCount > 1)
-            //{
-
-            //    dgvSimulacion.Rows.Remove(dgvSimulacion.CurrentRow);
-            //}
-
+            dgvTopologiaRed.Enabled = true;
+            nudNumeroCapas.Enabled = true;            
         }
 
         private void TabControl1_MouseDown(object sender, MouseEventArgs e)
@@ -575,101 +532,116 @@ namespace PerceptronUnicapa
                 Title = "Importar archivo (.csv)",
                 Filter = "Csv|*.csv"
             };
-            List<String> datos = new List<string>();
             if (d.ShowDialog() == DialogResult.OK)
             {
-                /// Console.WriteLine(d.FileName);            
-                
                 StreamReader reader = new StreamReader(d.FileName);
 
                 string line = reader.ReadLine();
                 char separador = ';';
-                if (!line.Contains(separador))
-                {
-                    separador = ',';                    
-                }
-                string[] headers = line.Split(separador);                
-                int entradas = 0;
-                int salidas = 0;
-                for (int i = 0; i < headers.Length; i++)
-                {                   
-                    if (headers[i].Contains("x"))
-                    {
-                        entradas++;
-                    }
-                    else
-                        salidas++;
-                            
-                }
+                separador = SeparadorCSV(line, separador);
+                string[] headers = line.Split(separador);
+                int entradas, salidas;
+                ContarEntradasSalidas(headers, out entradas, out salidas);
                 if (entradas == 0)
                 {
                     MessageBox.Show("El archivo de patrones debe contener una secuncia" +
                         " de entradas(x) y salidas(y), el presente archivo no sigue estas reglas" +
-                        " intente cargar otro nuevamente","Atencion",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        " intente cargar otro nuevamente", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
                     RemoverColumnasDataDrid(dgvPatrones);
-                    dgvPatrones.ColumnCount = headers.Length;
-                    for (int i = 0; i < headers.Length; i++)
-                    {
-                        dgvPatrones.Columns[i].Name = headers[i];
-                    }    
-                    while (line != null)
-                    {                    
-                        line = reader.ReadLine();
-                        if (line !=null)
-                        {
-                            datos.Add(line);
-
-                        }
-                    }
-                    this.patrones = datos.Count;
-                    this.cantidadSalidas = salidas;
-                    this.cantidadEntradas = entradas;
-                    this.matrizEntradas = new double[patrones,cantidadEntradas];
-                    this.matrizSalidas = new double[patrones, cantidadSalidas];
-                    reader.Close();
+                    List<string> datos = ExtraerListaPatrones(reader, ref line);
+                    InicializarMatricez(datos, headers, entradas, salidas);
                     LimpiarDataGrid(dgvPatrones);
-                
-
-                    foreach (string patron in datos)
-                    {                                                   
-                        dgvPatrones.Rows.Add(patron.Split(separador));
-                    }
-                    for (int i = 0; i < patrones; i++)
-                    {
-                        string[] linea = datos[i].Split(separador);
-                        int k = 0;
-                        for (int j = 0; j < salidas+entradas; j++)
-                        {
-                            if (j<entradas)
-                            {
-                                this.matrizEntradas[i, j] = Double.Parse(linea[j]);
-                            }
-                            else
-                            {                           
-                                this.matrizSalidas[i, k] = Double.Parse(linea[j]);
-                                k++;
-                            }
-                        }
-                    }
-                    lblEntradas.Text = "Entradas: " + entradas;
-                    lblSalidas.Text = "Salidas: " + salidas;
-                    lblPatrones.Text = "Patrones: " + patrones;
-                    dgvPatrones.AutoResizeColumns();
-                    dgvPatrones.ColumnHeadersHeightSizeMode =
-            DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-                    dgvPatrones.Dock = DockStyle.Fill;
-                                        
+                    LlenarMatricesPatrones(datos, separador, entradas, salidas);
                     txtLog.Text += "Patrones cargados con exito\n";
                     txtLog.Text += "_____________________\n";
                 }
-                
+
             }
 
         }
 
+        private static List<string> ExtraerListaPatrones(StreamReader reader, ref string line)
+        {
+            List<String> datos = new List<string>();
+            while (line != null)
+            {
+                line = reader.ReadLine();
+                if (line != null)
+                {
+                    datos.Add(line);
+                }
+            }
+            reader.Close();
+            return datos;
+        }
+
+        private void LlenarMatricesPatrones(List<string> datos, char separador, int entradas, int salidas)
+        {
+            for (int i = 0; i < patrones; i++)
+            {
+                string[] linea = datos[i].Split(separador);
+                int k = 0;
+                dgvPatrones.Rows.Add(linea);
+                for (int j = 0; j < salidas + entradas; j++)
+                {
+                    if (j < entradas)
+                    {
+                        this.matrizEntradas[i, j] = Double.Parse(linea[j]);
+                    }
+                    else
+                    {
+                        this.matrizSalidas[i, k] = Double.Parse(linea[j]);
+                        k++;
+                    }
+                }
+            }
+            dgvPatrones.AutoResizeColumns();
+        }
+
+        private void InicializarMatricez(List<string> datos, string[] headers, int entradas, int salidas)
+        {
+            dgvPatrones.ColumnCount = headers.Length;
+            for (int i = 0; i < headers.Length; i++)
+            {
+                dgvPatrones.Columns[i].Name = headers[i];
+            }
+            this.patrones = datos.Count;
+            this.cantidadSalidas = salidas;
+            this.cantidadEntradas = entradas;
+            this.matrizEntradas = new double[patrones, cantidadEntradas];
+            this.matrizSalidas = new double[patrones, cantidadSalidas];
+            lblEntradas.Text = "Entradas: " + entradas;
+            lblSalidas.Text = "Salidas: " + salidas;
+            lblPatrones.Text = "Patrones: " + patrones;
+        }
+
+        private static char SeparadorCSV(string line, char separador)
+        {
+            if (!line.Contains(separador))
+            {
+                separador = ',';
+            }
+
+            return separador;
+        }
+
+        private static void ContarEntradasSalidas(string[] headers, out int entradas, out int salidas)
+        {
+            entradas = 0;
+            salidas = 0;
+            for (int i = 0; i < headers.Length; i++)
+            {
+                if (headers[i].Contains("x"))
+                {
+                    entradas++;
+                }
+                else
+                    salidas++;
+            }
+        }
     }
     public class ComboBoxes
     {
