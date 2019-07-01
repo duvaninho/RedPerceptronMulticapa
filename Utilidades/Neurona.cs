@@ -36,29 +36,18 @@ namespace Utilidades
             UmbralAnterior = 0;
         }
         public double CalcularSalida(double[] entradas, 
-            double salidaDeseada, int funcionActivacion)
+            int funcionActivacion, int simulacion = 0)
         {
-            double valor = CalcularSoma(entradas);                        
-
-
-            if (funcionActivacion == 0)
+            double valor;
+            if (simulacion == 0)
             {
-                Escalon(valor);
-            }
-            else if (funcionActivacion == 1)
-                Sigmoide(valor);
-            else
-                TangenteHipervolico(valor);
-            ErrorLineal = SalidaNeurona - salidaDeseada;
-            return SalidaNeurona;
-        }
-        public double CalcularSalida(double[] entradas, double funcionActivacion)
-        {
+                valor = CalcularSoma(entradas, Pesos, Umbral);
+            }else
+                valor = CalcularSoma(entradas,PesosAnteriores,UmbralAnterior);
 
-            double valor = CalcularSoma(entradas);
             Activar(funcionActivacion, valor);
             return SalidaNeurona;
-        }
+        }        
 
         private void Activar(double funcionActivacion, double valor)
         {
@@ -74,7 +63,7 @@ namespace Utilidades
             }
         }
 
-        private double CalcularSoma(double[] entradas)
+        private double CalcularSoma(double[] entradas, double[] Pesos, double Umbral)
         {
             double valor = 0.0;            
             ImprimePesosUmbral();

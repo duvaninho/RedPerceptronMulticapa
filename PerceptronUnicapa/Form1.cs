@@ -53,7 +53,7 @@ namespace RedesNeuronales
         {
             InitializeComponent();
             //this.WindowState = FormWindowState.Maximized;
-            this.MaximizeBox = false;            
+            //this.MaximizeBox = false;            
             redInicializada = false;
             redEntrenada = false;
             Errores = new ChartValues<ObservableValue>();            
@@ -133,23 +133,96 @@ namespace RedesNeuronales
             dgvPatrones.ColumnHeadersHeightSizeMode =
                 DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvPatrones.Dock = DockStyle.Fill;
+            CmbAlgoritmoEntrenamiento.SelectedIndex = 1;
+            DgvParametrosSimulacion.ClipboardCopyMode =
+    DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            dgvPatrones.ClipboardCopyMode =
+    DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            
         }
-        private void BtnInicializarRed_Click(object sender, EventArgs e)
+        public void pegar_portapapeles(DataGridView datagrid)
         {
+            try
+            {
+                string texto_copiado = Clipboard.GetText();
+                string[] lineas = texto_copiado.Split('\n');
+                int error = 0;
+                int fila = datagrid.CurrentCell.RowIndex;
+                int columna = datagrid.CurrentCell.ColumnIndex;
+                DataGridViewCell objeto_celda;
+
+                foreach (string linea in lineas)
+                {
+                    if (fila < datagrid.RowCount && linea.Length > 0)
+                    {
+                        string[] celdas = linea.Split('\t');
+
+                        for (int indice = 0; indice < celdas.GetLength(0); ++indice)
+                        {
+                            if (columna + indice < datagrid.ColumnCount)
+                            {
+                                objeto_celda = datagrid[columna + indice, fila];
+
+                                //Mientras celda sea Diferente de ReadOnly
+                                if (!objeto_celda.ReadOnly)
+                                {
+                                    
+                                        objeto_celda.Value = Convert.ChangeType(celdas[indice], objeto_celda.ValueType);
+                                        //A continuación la linea añadida para eliminar los '\r'. De paso, y por si acaso en algún contexto ocurre, tambien los: '\t' y '\n'
+                                        objeto_celda.Value = objeto_celda.Value.ToString().Trim(new Char[] { '\t', '\n', '\r' });
+                                        // Fin linea añadida
+                                    
+                                }
+                                else
+                                {
+                                    // solo intercepta un error si los datos que está pegando es en una celda de solo lectura.
+                                    error++;
+                                }
+                            }
+                            else
+                            { break; }
+                        }
+                        fila++;
+                    }
+                    else
+                    { break; }
+
+                    if (error > 0)
+                        MessageBox.Show(string.Format("{0}  La celda no puede ser actualizada, debido a que la configuración de la columna es de solo lectura.", error),
+                                                  "ADVERTENCIA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (FormatException fexcepcion)
+            {
+                MessageBox.Show("Los datos que pegó están en el formato incorrecto para la celda." + "\n\nDETALLES: \n\n" + fexcepcion.Message,
+                                "ADVERTENCIA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+        }
+        private string VerficarReglasParaInicializacion()
+        {
+            string mensaje = "";
             if (patrones == 0)
             {
-                MessageBox.Show("Debe cargar un archivo para continuar con el entreamiento",
-                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mensaje = "Debe cargar un archivo para continuar con el entreamiento";
             }
-            else if(nudRataAprendizaje.Value <= 0)
+            else if (nudRataAprendizaje.Value <= 0)
             {
-                MessageBox.Show("Ingrese una rata de aprendizaje correcta(>0)",
-                   "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mensaje = "Ingrese una rata de aprendizaje correcta(>0)";
             }
             else if (nudNoIteraciones.Value <= 0)
             {
-                MessageBox.Show("Ingrese un numero de iteraciones valido",
-                   "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                mensaje = "Ingrese un numero de iteraciones valido";
+            }
+            return mensaje;
+        }
+        private void BtnInicializarRed_Click(object sender, EventArgs e)
+        {
+            string respuesta = VerficarReglasParaInicializacion();
+            if (respuesta != "")
+            {
+                MessageBox.Show(respuesta,
+                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -178,7 +251,7 @@ namespace RedesNeuronales
             for (int i = 0; i < numeroActivaciones; i++)
             {
                 neuronasPorCapa[i] = Convert.ToInt32(dgvTopologiaRed[1, i].Value);
-                activaciones[i] = comboBoxes[i].Opcion;
+                activaciones[i] = Math.Abs( comboBoxes[i].Opcion);
 
             }
         }
@@ -206,12 +279,13 @@ namespace RedesNeuronales
 
         private void EntrenarConPaso()
         {
-            if (patrones == 0)
+            string mensaje = VerificarReglasDeEntrenamiento();
+            if (mensaje != "")
             {
-                MessageBox.Show("Debe cargar un archivo para continuar con el entrenamiento",
+                MessageBox.Show(mensaje,
                     "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (redInicializada)
+            else
             {
                 if (RedNeuronal.ErrorEntrenamiento < RedNeuronal.ErrorMaximo)
                 {
@@ -226,11 +300,7 @@ namespace RedesNeuronales
                 }
 
             }
-            else
-            {
-                MessageBox.Show("Debe inicializar la red para continuar con el entrenamiento",
-                   "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            
         }
 
         private void RemoverColumnasDataDrid(DataGridView dataGridView)
@@ -246,29 +316,25 @@ namespace RedesNeuronales
         }
         private void BtnContinuar_Click(object sender, EventArgs e)
         {
-            Continuar();
-            GuardarTopologia();
+            Task.Factory.StartNew(Continuar);            
         }
 
         private void Continuar()
         {
-            if (patrones == 0)
+            string mensaje = VerificarReglasDeEntrenamiento();
+            if (mensaje != "")
             {
-                MessageBox.Show("Debe cargar un archivo para continuar con el entreamiento",
+                MessageBox.Show(mensaje,
                     "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (redInicializada)
+            }           
+            else 
             {
-                Task.Factory.StartNew(FitRedReuronal);
-                
+                FitRedReuronal();
+                Invoke(new CallGuardarTopologia( GuardarTopologia));
             }
-            else
-            {
-                MessageBox.Show("Debe inicializar la red para continuar con el entrenamiento",
-                   "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            }
+            
         }
+        private delegate void CallGuardarTopologia();
         private void FitRedReuronal()
         {
             while (Entrenando())
@@ -323,73 +389,7 @@ namespace RedesNeuronales
             return RedNeuronal.Entrenando && RedNeuronal.IteracionesEntrenamiento < RedNeuronal.IteracionesRequeridas;
         }
 
-        private void BtnSimular_Click(object sender, EventArgs e)
-        {
-        //    if (patrones == 0)
-        //    {
-        //        MessageBox.Show("Debe cargar un archivo para continuar con el entreamiento",
-        //            "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //    else if (redInicializada)
-        //    {
-        //        DialogResult respuesta = MessageBox.Show("¿Desea simular los patrones" +
-        //            "que participaron en la fase de entrenamiento?", "Informacion",
-        //            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
-        //        if (respuesta == DialogResult.Yes)
-        //        {
-        //            removerColumnasDataDrid(dgvSimulacion);
-        //            dgvSimulacion.ColumnCount = cantidadSalidas * 2;
-        //            int h = 1;
-        //            for (int i = 0; i < dgvSimulacion.ColumnCount; i++)
-        //            {
-        //                if (i < dgvSimulacion.ColumnCount / 2)
-        //                {
-        //                    dgvSimulacion.Columns[i].Name = "yd" + (i + 1);
-        //                }
-        //                else
-        //                {
-        //                    dgvSimulacion.Columns[i].Name = "yr" + h;
-        //                    h++;
-        //                }
-        //            }
-
-        //            foreach (var perceptron in perceptrons)
-        //            {
-        //                double[] vector = new double[cantidadSalidas];
-        //                for (int i = 0; i < patrones; i++)
-        //                {
-        //                    (perceptron.SimularRed(perceptron.ObtenerPatron(i))).CopyTo(vector, 0);
-        //                    string salidaDeseada = "";
-        //                    string salidaReal = "";
-        //                    for (int j = 0; j < vector.Length; j++)
-        //                    {
-        //                        salidaDeseada += matrizSalidas[i, j] + ";";
-        //                        salidaReal += vector[j] + ";";
-        //                    }
-        //                    string paraDataGrid = salidaDeseada + salidaReal;
-        //                    dgvSimulacion.Rows.Add(paraDataGrid.Split(';'));
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (respuesta == DialogResult.No)
-        //            {
-        //                //int[] vector = new int[cantidadEntradas];
-        //                //for (int i = 0; i < vector.Length; i++)
-        //                //{
-        //                //    vector[i] = 
-        //                //}
-        //            }
-        //        }
-        //    }
-        //    else if (!redEntrenada)
-        //    {
-        //        MessageBox.Show("La red aún no ha entrenado", "Informacion", MessageBoxButtons.OK,
-        //            MessageBoxIcon.Information);
-        //    }
-
-        }        
+              
         private void BtnCargarPesosyUmbrales_Click(object sender, EventArgs e)
         {
             if (patrones == 0)
@@ -440,17 +440,38 @@ namespace RedesNeuronales
             int k = 1;
             for (int i = 0; i < nudNumeroCapas.Value; i++)
             {
-                if (i == nudNumeroCapas.Value - 1)
+                dgvTopologiaRed.Rows.Add();
+                for (int j = 0; j < dgvTopologiaRed.ColumnCount-1; j++)
                 {
-                    dgvTopologiaRed.Rows.Add("Salida",
-                        "1");
-                }
-                else
-                {
-
-                    dgvTopologiaRed.Rows.Add("Oculta " + k,
-                            "1");
-                    k++;
+                    if (i == nudNumeroCapas.Value - 1)
+                    {
+                        if (j==0)
+                        {
+                            dgvTopologiaRed[j, i].Value = "Salida";
+                        }
+                        else
+                        {
+                            if (j==1)
+                            {
+                                dgvTopologiaRed[j, i].Value = cantidadSalidas;
+                                dgvTopologiaRed[j, i].ReadOnly = true;
+                            }
+                        }                        
+                    }
+                    else
+                    {
+                        if (j == 0)
+                        {
+                            dgvTopologiaRed[j, i].Value = "Oculta " + i;
+                        }
+                        else
+                        {
+                            if (j == 1)
+                            {
+                                dgvTopologiaRed[j, i].Value = 1;                                
+                            }
+                        }
+                    }
                 }
 
             }
@@ -505,14 +526,16 @@ namespace RedesNeuronales
             {
                 series.Values.Clear();
             }
-            //foreach (var series in CartesianVariacionRealDeseada.Series)
-            //{
-            //    series.Values.Clear();
-            //}  
+            foreach (var series in CartesianVariacionRealDeseada.Series)
+            {
+                series.Values.Clear();
+            }
             CartesianVariacionRealDeseada.Series.Clear();
             btnInicializarRed.Enabled = true;
             dgvTopologiaRed.Enabled = true;
-            nudNumeroCapas.Enabled = true;            
+            nudNumeroCapas.Enabled = true;
+            redEntrenada = false;
+            redInicializada = false;
         }
 
         private void TabControl1_MouseDown(object sender, MouseEventArgs e)
@@ -557,6 +580,7 @@ namespace RedesNeuronales
                     LlenarMatricesPatrones(datos, separador, entradas, salidas);
                     txtLog.Text += "Patrones cargados con exito\n";
                     txtLog.Text += "_____________________\n";
+                    LlenarDatagridTopologia();
                 }
 
             }
@@ -601,11 +625,74 @@ namespace RedesNeuronales
             dgvPatrones.AutoResizeColumns();
         }
 
+        private void BtnSimular_Click_1(object sender, EventArgs e)
+        {
+            string mensaje = VerificarReglasDeEntrenamiento();
+            if (mensaje != "")
+            {
+                MessageBox.Show(mensaje,
+                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if(!redEntrenada)
+            {
+                MessageBox.Show("La Red no ha sido entrenada aún",
+                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                SimularPatrones();
+            }
+        }
+
+        private void SimularPatrones()
+        {
+            double[] patronEntrada = new double[cantidadEntradas];
+            
+            for (int i = 0; i < DgvParametrosSimulacion.RowCount-1; i++)
+            {
+                for (int j = 0; j < DgvParametrosSimulacion.ColumnCount-cantidadSalidas; j++)
+                {
+                    patronEntrada[j] = Convert.ToDouble(DgvParametrosSimulacion[j, i].Value);
+                }
+                double[] patronSalida = RedNeuronal.SimularRed(patronEntrada);
+                int l = 0;
+                for (int k = (DgvParametrosSimulacion.ColumnCount - cantidadSalidas); k < DgvParametrosSimulacion.ColumnCount; k++)
+                {
+                    DgvParametrosSimulacion[k, i].Value = patronSalida[l];
+                    l++;
+                }
+            }
+        }       
+
+        private string VerificarReglasDeEntrenamiento()
+        {
+            string mensaje = "";
+            if (patrones == 0)
+            {
+                mensaje = "Debe cargar un archivo para continuar con el entreamiento";                
+            }
+            else if (!redInicializada)
+            {
+                mensaje = "Debe inicializar la red para continuar con el entrenamiento";
+            }            
+            return mensaje;
+        }
+
+        private void DgvParametrosSimulacion_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.V)
+            {
+                pegar_portapapeles(DgvParametrosSimulacion);
+            }
+        }
+
         private void InicializarMatricez(List<string> datos, string[] headers, int entradas, int salidas)
         {
             dgvPatrones.ColumnCount = headers.Length;
+            DgvParametrosSimulacion.ColumnCount = headers.Length; 
             for (int i = 0; i < headers.Length; i++)
             {
+                DgvParametrosSimulacion.Columns[i].Name = headers[i];
                 dgvPatrones.Columns[i].Name = headers[i];
             }
             this.patrones = datos.Count;

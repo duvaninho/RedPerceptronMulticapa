@@ -36,7 +36,7 @@ namespace Utilidades
                 MatrizPesos[i,indice] = pesosNeurona[i];
             }
         }
-        public void CalculaCapa(double[] entradas)
+        public void CalculaCapa(double[] entradas, int simulacion)
         { //Calcula las salidas de la capa             
             Console.WriteLine("Entra: ");
             for (int cont2 = 0; cont2 < entradas.Length; cont2++) Console.Write("{0:F4}; ", entradas[cont2]);
@@ -44,7 +44,7 @@ namespace Utilidades
             {
                 GuardarPesos(i, Neuronas[i].Pesos);
                 Salidas[i] = Neuronas[i].CalcularSalida(entradas,
-                    FuncionActivacion);
+                    FuncionActivacion, simulacion);
             }
             Console.WriteLine(" ");
             Console.WriteLine("Sale: ");
