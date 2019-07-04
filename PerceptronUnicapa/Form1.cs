@@ -46,6 +46,7 @@ namespace RedesNeuronales
         RedNeuronal RedNeuronal;
         private const int keepRecords = 20;
         private int VelocidadCharts { get; set; }
+        public bool TopologiaCargada { get; private set; }
 
         //Creamos el delegado 
 
@@ -232,16 +233,26 @@ namespace RedesNeuronales
                 activaciones[0] = 1;
 
                 TopologiaCapas(neuronasPorCapa, numeroActivaciones, activaciones);
-                Random random = new Random();
-                RedNeuronal = new RedNeuronal(this.matrizSalidas, Convert.ToDouble(
-                    nudErrorMaximo.Value), this.patrones, Convert.ToDouble(
+                if (!TopologiaCargada)
+                {
+                    RedNeuronal = new RedNeuronal(matrizSalidas, patrones, matrizEntradas
+                        , CmbAlgoritmoEntrenamiento.SelectedIndex);
+                    Random random = new Random();
+                    RedNeuronal.CreaCapas(neuronasPorCapa, random);
+                    
+                }
+                RedNeuronal.ParametrosEntrenaiento(Convert.ToDouble(
+                    nudErrorMaximo.Value), Convert.ToDouble(
                         this.nudRataAprendizaje.Value), Convert.ToInt16(
-                     nudNoIteraciones.Value), this.matrizEntradas, random,
-                    activaciones, neuronasPorCapa, Convert.ToDouble(NudRataDinamica.Value),
-                    CmbAlgoritmoEntrenamiento.SelectedIndex);
+                     nudNoIteraciones.Value), activaciones, Convert.ToDouble(NudRataDinamica.Value));
                 redInicializada = true;
                 txtLog.Text += "Red Inicalizada con exito\n";
                 txtLog.Text += "_____________________\n";
+                foreach (var series in CartesianVariacionRealDeseada.Series)
+                {
+                    series.Values.Clear();
+                }
+                CartesianVariacionRealDeseada.Series.Clear();
                 CrearSeriesGrafica();
             }
         }
@@ -250,12 +261,47 @@ namespace RedesNeuronales
         {
             for (int i = 0; i < numeroActivaciones; i++)
             {
-                neuronasPorCapa[i] = Convert.ToInt32(dgvTopologiaRed[1, i].Value);
-                activaciones[i] = Math.Abs( comboBoxes[i].Opcion);
+                neuronasPorCapa[i] = Convert.ToInt32(dgvTopologiaRed[1, i].Value);                
+                activaciones[i] = IndiceActivaciones( dgvTopologiaRed.Rows[i].Cells[2].Value.ToString());
 
             }
         }
-
+        private int IndiceActivaciones(string funcionActivacion)
+        {
+            int respuesta = 0;
+            switch (funcionActivacion)
+            {
+                case "Sigmoidal": respuesta = 0; break;
+                case "Tangente Hiperbolico": respuesta = 1; break;
+                case "Escalon": respuesta = 2; break;
+                case "Seno": respuesta = 3; break;
+                case "Coseno": respuesta = 4; break;
+                case "Lineal": respuesta = 5; break;
+                case "Gaussiana": respuesta = 6 ; break;
+                default:
+                    respuesta = 0;
+                    break;
+            }
+            return respuesta;
+        }
+        private string NombreActivaciones(int indice)
+        {
+            string respuesta = "Sigmoidal";
+            switch (indice)
+            {
+                case 0: respuesta = "Sigmoidal"; break;
+                case 1:respuesta= "Tangente Hiperbolico"; break;
+                case 2:respuesta= "Escalon"; break;
+                case 3:respuesta= "Seno"; break;
+                case 4:respuesta= "Coseno"; break;
+                case 5:respuesta= "Lineal"; break;
+                case 6:respuesta= "Gaussiana"; break;
+                default:
+                    respuesta = "Sigmoidal";
+                    break;
+            }
+            return respuesta;
+        }
         private LineSeries InicializarSerie(
             ChartValues<ObservableValue> observables, string title)
         {
@@ -297,6 +343,7 @@ namespace RedesNeuronales
                 {
                     RedNeuronal.Entrenar();
                     Plot();
+                    LlenarLabels();
                 }
 
             }
@@ -331,17 +378,26 @@ namespace RedesNeuronales
             {
                 FitRedReuronal();
                 Invoke(new CallGuardarTopologia( GuardarTopologia));
+                RedNeuronal.IteracionesEntrenamiento = 0;
+                
             }
             
         }
         private delegate void CallGuardarTopologia();
+        private delegate void CallLlenarLabels();
+        private void LlenarLabels()
+        {
+            lblError.Text = "Error Entrenamiento: " + Math.Round( RedNeuronal.ErrorEntrenamiento,9);
+            lblIteracion.Text = "Iteracion: " + RedNeuronal.IteracionesEntrenamiento;
+        }
         private void FitRedReuronal()
         {
             while (Entrenando())
             {
+                Plot();
                 RedNeuronal.Entrenar();
 
-                Plot();
+                Invoke(new CallLlenarLabels(LlenarLabels));
             }
         }
 
@@ -386,7 +442,7 @@ namespace RedesNeuronales
 
         private bool Entrenando()
         {
-            return RedNeuronal.Entrenando && RedNeuronal.IteracionesEntrenamiento < RedNeuronal.IteracionesRequeridas;
+            return RedNeuronal.ErrorEntrenamiento >= RedNeuronal.ErrorMaximo && RedNeuronal.IteracionesEntrenamiento < RedNeuronal.IteracionesRequeridas;
         }
 
               
@@ -411,13 +467,76 @@ namespace RedesNeuronales
                     {
                         var json = jsonStream.ReadToEnd();
                         RedNeuronal perceptronDevuelto = JsonConvert.DeserializeObject<RedNeuronal>(json);
-                        RedNeuronal = perceptronDevuelto;
-                        redInicializada = true;
-                        dgvTopologiaRed.Enabled = false;
-                        nudNumeroCapas.Enabled = false;
+                        
+                        if (perceptronDevuelto.Entradas.Equals(matrizEntradas)
+                            || perceptronDevuelto.SalidasDeseadas.Equals(this.matrizSalidas))
+                        {
+                            MessageBox.Show("Los patrones no coinciden entre si", "Atencion",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            RedNeuronal = null;
+                        }
+                        else
+                        {
+                            RedNeuronal = perceptronDevuelto;
+                            nudNumeroCapas.Enabled = false;
+                            TopologiaCargada = true;
+                            nudErrorMaximo.Value = Convert.ToDecimal(RedNeuronal.ErrorMaximo);
+                            NudRataDinamica.Value = Convert.ToDecimal(RedNeuronal.RataDinamica);
+                            nudRataAprendizaje.Value = Convert.ToDecimal(RedNeuronal.RataAprendizaje);
+                            nudNumeroCapas.Value = Convert.ToDecimal(RedNeuronal.Capas.Count);
+                            lblIteracion.Text = "Iteracion: " + RedNeuronal.IteracionesEntrenamiento;
+                            lblError.Text = "Error Entrenamiento: " + Math.Round( RedNeuronal.ErrorEntrenamiento,9);
+                            ReadOnlyDgvTopologia(true);
+                            MessageBox.Show("¡Pesos y umbrales cargados con exito!\nProceda a " +
+                                "configurar los parametros de entrenamiento y pulse Inicializar", "Informacion",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                     }
                 }
             }            
+        }
+        private void ReadOnlyDgvTopologia(bool enable)
+        {
+            dgvTopologiaRed.Rows.Clear();
+            dgvTopologiaRed.RowCount = RedNeuronal.Capas.Count;
+
+            for (int i = 0; i < dgvTopologiaRed.RowCount; i++)
+            {                
+                for (int j = 0; j < dgvTopologiaRed.ColumnCount ; j++)
+                {
+                    ConfigurarDgvTopologia(enable, i, j);
+                }
+            }
+        }
+
+        private void ConfigurarDgvTopologia(bool enable, int i, int j)
+        {
+            if (j == 0)
+            {
+                if (i == RedNeuronal.Capas.Count -1)
+                {
+                    dgvTopologiaRed[j, i].Value = "Salida";
+                }else
+                    dgvTopologiaRed[j, i].Value = "Oculta: " + i;
+
+                dgvTopologiaRed[j,i].ReadOnly = enable;
+            }
+            else
+            {
+                if (j == 1)
+                {
+                    dgvTopologiaRed[j, i].Value = RedNeuronal.Capas[i].Neuronas.Count;
+                    dgvTopologiaRed[j, i].ReadOnly = enable;
+                }
+                else
+                {
+                    //DataGridViewComboBoxCell dataGridViewComboBoxCell = dgvTopologiaRed[j,i] as DataGridViewComboBoxCell;
+                    //dataGridViewComboBoxCell.Value = dataGridViewComboBoxCell.Items[RedNeuronal.Capas[i].FuncionActivacion];
+
+                    dgvTopologiaRed[j, i].Value = NombreActivaciones(RedNeuronal.Capas[i].FuncionActivacion);
+                    dgvTopologiaRed[j,i].ReadOnly = false;
+                }
+            }
         }
 
         private void BtnBorrarLog_Click(object sender, EventArgs e)
@@ -479,12 +598,12 @@ namespace RedesNeuronales
 
         private void DgvTopologiaRed_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            if (e.Control is ComboBox combo)
-            {
+            //if (e.Control is ComboBox combo)
+            //{
 
-                combo.SelectedIndexChanged -= new EventHandler(Combo_SelectedIndexChange);
-                combo.SelectedIndexChanged += Combo_SelectedIndexChange;
-            }
+            //    combo.SelectedIndexChanged -= new EventHandler(Combo_SelectedIndexChange);
+            //    combo.SelectedIndexChanged += Combo_SelectedIndexChange;
+            //}
 
         }
 
@@ -526,6 +645,7 @@ namespace RedesNeuronales
             {
                 series.Values.Clear();
             }
+            
             foreach (var series in CartesianVariacionRealDeseada.Series)
             {
                 series.Values.Clear();
@@ -536,6 +656,7 @@ namespace RedesNeuronales
             nudNumeroCapas.Enabled = true;
             redEntrenada = false;
             redInicializada = false;
+            TopologiaCargada = false;
         }
 
         private void TabControl1_MouseDown(object sender, MouseEventArgs e)
@@ -632,12 +753,7 @@ namespace RedesNeuronales
             {
                 MessageBox.Show(mensaje,
                     "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if(!redEntrenada)
-            {
-                MessageBox.Show("La Red no ha sido entrenada aún",
-                    "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }            
             else
             {
                 SimularPatrones();
@@ -683,6 +799,24 @@ namespace RedesNeuronales
             if (e.Control && e.KeyCode == Keys.V)
             {
                 pegar_portapapeles(DgvParametrosSimulacion);
+            }
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnDetener_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                Thread.CurrentThread.Abort();
+            }
+            catch (Exception)
+            {
+                GuardarTopologia();
             }
         }
 

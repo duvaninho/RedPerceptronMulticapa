@@ -20,8 +20,7 @@ namespace Utilidades
         public int IteracionesEntrenamiento { get; set; }
         public int IteracionesRequeridas { get; set; }
         public int CantidadEntradas { get; set; }
-        public int CantidadSalidas { get; set; }
-        public int[] FuncionActivacion { get; set; }
+        public int CantidadSalidas { get; set; }        
         public bool Entrenando { get; set; }
         public List<Capa> Capas { get; set; }
         public bool Entrenada { get; set; }
@@ -29,32 +28,33 @@ namespace Utilidades
         public double[] ErroresLinealUltimaCapa { get; set; }
 
         public RedNeuronal() { }
-        public RedNeuronal(double[,] salidasDeseadas, double errorMaximo, int patrones,
-            double rataAprendizaje, int iteracionesRequeridas, double[,] entradas,
-            Random random, int[] funcionActivacion,int[] neuronasPorCapa, double rataDinamica = 0,
-            int BackPropagation=0)
-        {
-            if (ErrorEntrenamiento > errorMaximo)
-            {
-                Entrenando = true;
-            }
+        public RedNeuronal(double[,] salidasDeseadas, int patrones,
+            double[,] entradas, int BackPropagation = 0)
+        {            
             this.Patrones = patrones;
             CantidadEntradas = entradas.GetLength(1);
             CantidadSalidas = salidasDeseadas.GetLength(1);
             MapEntradas(entradas);
             MapSalidasDeseadas(salidasDeseadas);            
-            this.ErrorMaximo = errorMaximo;
-            this.RataAprendizaje = rataAprendizaje;
-            this.IteracionesRequeridas = iteracionesRequeridas;
-            this.FuncionActivacion = funcionActivacion;
-            CreaCapas(this.Entradas.GetLength(1), neuronasPorCapa, random);
             ErroresLinealUltimaCapa = new double[CantidadSalidas];
-            this.RataDinamica = rataDinamica;
             MayoresEntradas = new double[Entradas.GetLength(1)];
             MayoresSalidas = new double[SalidasDeseadas.GetLength(1)];
             NormalizarPatrones();
-            AlgoritmoEntrenamiento = BackPropagation;
             variacionRealDeseada = new double[CantidadSalidas * 2];
+            this.AlgoritmoEntrenamiento = BackPropagation;
+        }
+        public void ParametrosEntrenaiento(double errorMaximo, double rataAprendizaje, int iteracionesRequeridas,
+            int[] funcionActivacion, double rataDinamica = 0)
+        {            
+            this.ErrorMaximo = errorMaximo;
+            this.RataAprendizaje = rataAprendizaje;
+            this.IteracionesRequeridas = iteracionesRequeridas;
+            this.IteracionesEntrenamiento = 0;
+            this.RataDinamica = rataDinamica;            
+            for (int i = 0; i < funcionActivacion.Length; i++)
+            {
+                Capas[i].FuncionActivacion = funcionActivacion[i];
+            }
         }
         private void MapSalidasDeseadas(double[,] salidasDeseadas)
         {
@@ -201,22 +201,22 @@ namespace Utilidades
             }
             return salidaSimulada;
         }
-        public void CreaCapas(int totalEntradasExternas, int[] NeuronasPorCapa, Random azar)
+        public void CreaCapas(int[] NeuronasPorCapa, Random azar)
         {
             Capas = new List<Capa>();            
             for (int i = 0; i < NeuronasPorCapa.Length; i++)      
                 if(i == 0 && i == (NeuronasPorCapa.Length - 1))
                     Capas.Add(new Capa(NeuronasPorCapa[i], Entradas.GetLength(1),
-                        azar,2,FuncionActivacion[i]));
+                        azar,2));
                 else if(i==0)
                     Capas.Add(new Capa(NeuronasPorCapa[i], Entradas.GetLength(1),
-                        azar, 1, FuncionActivacion[i]));
+                        azar, 1));
                 else if(i == (NeuronasPorCapa.Length-1))
                     Capas.Add(new Capa(NeuronasPorCapa[i], NeuronasPorCapa[i - 1],
-                        azar, 2, FuncionActivacion[i]));
+                        azar, 2));
                 else
                     Capas.Add(new Capa(NeuronasPorCapa[i], NeuronasPorCapa[i - 1],
-                        azar,1, FuncionActivacion[i]));
+                        azar,1));
         }
 
         /////Metodos y funciones para la BackPropagation

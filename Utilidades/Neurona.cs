@@ -56,13 +56,30 @@ namespace Utilidades
                 case 0: Sigmoide(valor); break;
                 case 1: TangenteHipervolico(valor); break;
                 case 2: Escalon(valor); break;
-                case 3: BiPolar(valor); break;
+                case 3: Seno(valor); break;
+                case 4: Coseno(valor); break;
+                case 5: Lineal(valor); break;
+                case 6: Gaussiana(valor); break;
                 default:
                     Sigmoide(valor);
                     break;
             }
         }
-
+        private void Gaussiana(double valor)
+        {
+            SalidaNeurona = Math.Pow(Math.Exp(1), -Math.Pow(valor, 2));
+            SalidaNeuronaDerivada = -2 *valor* (Math.Pow(Math.Exp(1), -Math.Pow(valor, 2)));
+        }
+        private void Seno(double soma)
+        {
+            SalidaNeurona = Math.Sin(soma);
+            SalidaNeuronaDerivada = Math.Cos(soma);
+        }
+        private void Coseno(double soma)
+        {
+            SalidaNeurona = Math.Cos(soma);
+            SalidaNeuronaDerivada = -Math.Sin(soma);
+        }
         private double CalcularSoma(double[] entradas, double[] Pesos, double Umbral)
         {
             double valor = 0.0;            
@@ -88,6 +105,11 @@ namespace Utilidades
         {
             SalidaNeurona = 1 / (1 + Math.Exp(-valor));
             SalidaNeuronaDerivada = Math.Exp(-valor) / Math.Pow(1 + Math.Exp(-valor), 2);
+        }
+        private void Lineal(double valor)
+        {
+            SalidaNeurona = valor;
+            SalidaNeuronaDerivada = 1;
         }
         private void TangenteHipervolico(double valor)
         {

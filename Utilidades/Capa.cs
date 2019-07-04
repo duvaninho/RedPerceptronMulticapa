@@ -14,9 +14,8 @@ namespace Utilidades
         public double[] ErroresNoLineales { get; set; }    
         public double[] ErroresLineales { get; set; }
         public double[,] MatrizPesos { get; set; }
-        public Capa(int totalNeuronas, int totalEntradas, Random azar, int tipo, int funcionActivacion)
-        {
-            this.FuncionActivacion = funcionActivacion;
+        public Capa(int totalNeuronas, int totalEntradas, Random azar, int tipo)
+        {            
             Neuronas = new List<Neurona>();
             for (int i = 0; i < totalNeuronas; i++) Neuronas.Add(new Neurona(azar, totalEntradas));
             Salidas = new double[totalNeuronas];            
