@@ -36,9 +36,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.chartErrorvsIteracion = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -55,6 +55,7 @@
             this.CartesianErrors = new LiveCharts.WinForms.CartesianChart();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel11 = new System.Windows.Forms.Panel();
+            this.BtnDetener = new Bunifu.Framework.UI.BunifuFlatButton();
             this.btnContinuar = new Bunifu.Framework.UI.BunifuFlatButton();
             this.btnEntrenar = new Bunifu.Framework.UI.BunifuFlatButton();
             this.label5 = new System.Windows.Forms.Label();
@@ -89,6 +90,9 @@
             this.btnCargarPatrones = new Bunifu.Framework.UI.BunifuThinButton2();
             this.panel15 = new System.Windows.Forms.Panel();
             this.dgvTopologiaRed = new Bunifu.Framework.UI.BunifuCustomDataGrid();
+            this.Capa = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Neuronas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Activacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.nudNumeroCapas = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.panel12 = new System.Windows.Forms.Panel();
@@ -106,10 +110,6 @@
             this.panel17 = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.Capa = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Neuronas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Activacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.BtnDetener = new Bunifu.Framework.UI.BunifuFlatButton();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartErrorvsIteracion)).BeginInit();
             this.tabPage1.SuspendLayout();
@@ -309,6 +309,45 @@
             this.panel11.Name = "panel11";
             this.panel11.Size = new System.Drawing.Size(361, 151);
             this.panel11.TabIndex = 15;
+            // 
+            // BtnDetener
+            // 
+            this.BtnDetener.Activecolor = System.Drawing.Color.White;
+            this.BtnDetener.BackColor = System.Drawing.Color.White;
+            this.BtnDetener.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BtnDetener.BorderRadius = 0;
+            this.BtnDetener.ButtonText = "      Detener";
+            this.BtnDetener.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnDetener.DisabledColor = System.Drawing.Color.Gray;
+            this.BtnDetener.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnDetener.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnDetener.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.BtnDetener.Iconcolor = System.Drawing.Color.Gainsboro;
+            this.BtnDetener.Iconimage = ((System.Drawing.Image)(resources.GetObject("BtnDetener.Iconimage")));
+            this.BtnDetener.Iconimage_right = null;
+            this.BtnDetener.Iconimage_right_Selected = null;
+            this.BtnDetener.Iconimage_Selected = null;
+            this.BtnDetener.IconMarginLeft = 0;
+            this.BtnDetener.IconMarginRight = 0;
+            this.BtnDetener.IconRightVisible = true;
+            this.BtnDetener.IconRightZoom = 0D;
+            this.BtnDetener.IconVisible = true;
+            this.BtnDetener.IconZoom = 70D;
+            this.BtnDetener.IsTab = false;
+            this.BtnDetener.Location = new System.Drawing.Point(0, 101);
+            this.BtnDetener.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.BtnDetener.Name = "BtnDetener";
+            this.BtnDetener.Normalcolor = System.Drawing.Color.White;
+            this.BtnDetener.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(129)))), ((int)(((byte)(77)))));
+            this.BtnDetener.OnHoverTextColor = System.Drawing.Color.White;
+            this.BtnDetener.selected = false;
+            this.BtnDetener.Size = new System.Drawing.Size(361, 38);
+            this.BtnDetener.TabIndex = 12;
+            this.BtnDetener.Text = "      Detener";
+            this.BtnDetener.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnDetener.Textcolor = System.Drawing.Color.SeaGreen;
+            this.BtnDetener.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnDetener.Click += new System.EventHandler(this.BtnDetener_Click);
             // 
             // btnContinuar
             // 
@@ -951,6 +990,33 @@
             this.dgvTopologiaRed.TabIndex = 4;
             this.dgvTopologiaRed.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.DgvTopologiaRed_EditingControlShowing);
             // 
+            // Capa
+            // 
+            this.Capa.HeaderText = "Capa";
+            this.Capa.Name = "Capa";
+            // 
+            // Neuronas
+            // 
+            this.Neuronas.HeaderText = "Neuronas";
+            this.Neuronas.Name = "Neuronas";
+            // 
+            // Activacion
+            // 
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Activacion.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Activacion.HeaderText = "Activacion";
+            this.Activacion.Items.AddRange(new object[] {
+            "Sigmoidal",
+            "Tangente Hiperbolico",
+            "Escalon",
+            "Seno",
+            "Coseno",
+            "Lineal",
+            "Gaussiana",
+            "Bipolar"});
+            this.Activacion.Name = "Activacion";
+            this.Activacion.ToolTipText = "Funcion de Activacion";
+            // 
             // nudNumeroCapas
             // 
             this.nudNumeroCapas.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1153,71 +1219,6 @@
             this.tabControl1.TabIndex = 0;
             this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TabControl1_MouseDown);
             // 
-            // Capa
-            // 
-            this.Capa.HeaderText = "Capa";
-            this.Capa.Name = "Capa";
-            // 
-            // Neuronas
-            // 
-            this.Neuronas.HeaderText = "Neuronas";
-            this.Neuronas.Name = "Neuronas";
-            // 
-            // Activacion
-            // 
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Activacion.DefaultCellStyle = dataGridViewCellStyle5;
-            this.Activacion.HeaderText = "Activacion";
-            this.Activacion.Items.AddRange(new object[] {
-            "Sigmoidal",
-            "Tangente Hiperbolico",
-            "Escalon",
-            "Seno",
-            "Coseno",
-            "Lineal",
-            "Gaussiana"});
-            this.Activacion.Name = "Activacion";
-            this.Activacion.ToolTipText = "Funcion de Activacion";
-            // 
-            // BtnDetener
-            // 
-            this.BtnDetener.Activecolor = System.Drawing.Color.White;
-            this.BtnDetener.BackColor = System.Drawing.Color.White;
-            this.BtnDetener.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.BtnDetener.BorderRadius = 0;
-            this.BtnDetener.ButtonText = "      Detener";
-            this.BtnDetener.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BtnDetener.DisabledColor = System.Drawing.Color.Gray;
-            this.BtnDetener.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnDetener.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnDetener.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.BtnDetener.Iconcolor = System.Drawing.Color.Gainsboro;
-            this.BtnDetener.Iconimage = ((System.Drawing.Image)(resources.GetObject("BtnDetener.Iconimage")));
-            this.BtnDetener.Iconimage_right = null;
-            this.BtnDetener.Iconimage_right_Selected = null;
-            this.BtnDetener.Iconimage_Selected = null;
-            this.BtnDetener.IconMarginLeft = 0;
-            this.BtnDetener.IconMarginRight = 0;
-            this.BtnDetener.IconRightVisible = true;
-            this.BtnDetener.IconRightZoom = 0D;
-            this.BtnDetener.IconVisible = true;
-            this.BtnDetener.IconZoom = 70D;
-            this.BtnDetener.IsTab = false;
-            this.BtnDetener.Location = new System.Drawing.Point(0, 101);
-            this.BtnDetener.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.BtnDetener.Name = "BtnDetener";
-            this.BtnDetener.Normalcolor = System.Drawing.Color.White;
-            this.BtnDetener.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(129)))), ((int)(((byte)(77)))));
-            this.BtnDetener.OnHoverTextColor = System.Drawing.Color.White;
-            this.BtnDetener.selected = false;
-            this.BtnDetener.Size = new System.Drawing.Size(361, 38);
-            this.BtnDetener.TabIndex = 12;
-            this.BtnDetener.Text = "      Detener";
-            this.BtnDetener.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnDetener.Textcolor = System.Drawing.Color.SeaGreen;
-            this.BtnDetener.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnDetener.Click += new System.EventHandler(this.BtnDetener_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1343,10 +1344,10 @@
         private System.Windows.Forms.Panel panel19;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Label lblIteracion;
+        private Bunifu.Framework.UI.BunifuFlatButton BtnDetener;
         private System.Windows.Forms.DataGridViewTextBoxColumn Capa;
         private System.Windows.Forms.DataGridViewTextBoxColumn Neuronas;
         private System.Windows.Forms.DataGridViewComboBoxColumn Activacion;
-        private Bunifu.Framework.UI.BunifuFlatButton BtnDetener;
     }
 }
 

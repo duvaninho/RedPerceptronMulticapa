@@ -99,7 +99,7 @@ namespace Utilidades
             {
                 for (int j = 0; j < SalidasDeseadas.GetLength(1); j++)
                 {
-                    if (SalidasDeseadas[i, j] > MayoresSalidas[j])
+                    if (Math.Abs(SalidasDeseadas[i, j]) > Math.Abs( MayoresSalidas[j]))
                     {
                         MayoresSalidas[j] = SalidasDeseadas[i, j];
                     }

@@ -60,6 +60,7 @@ namespace Utilidades
                 case 4: Coseno(valor); break;
                 case 5: Lineal(valor); break;
                 case 6: Gaussiana(valor); break;
+                case 7: BiPolar(valor); break;
                 default:
                     Sigmoide(valor);
                     break;
