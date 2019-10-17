@@ -84,7 +84,7 @@ namespace Utilidades
         private double CalcularSoma(double[] entradas, double[] Pesos, double Umbral)
         {
             double valor = 0.0;            
-            ImprimePesosUmbral();
+            //ImprimePesosUmbral();
             for (int i = 0; i < Pesos.Length; i++)
             {
                 valor += entradas[i] * Pesos[i];

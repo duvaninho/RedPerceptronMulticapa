@@ -657,7 +657,7 @@
             // 
             // nudErrorMaximo
             // 
-            this.nudErrorMaximo.DecimalPlaces = 5;
+            this.nudErrorMaximo.DecimalPlaces = 50;
             this.nudErrorMaximo.Dock = System.Windows.Forms.DockStyle.Top;
             this.nudErrorMaximo.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudErrorMaximo.Location = new System.Drawing.Point(0, 82);

@@ -37,7 +37,7 @@ namespace Utilidades
         }
         public void CalculaCapa(double[] entradas, int simulacion)
         { //Calcula las salidas de la capa             
-            Console.WriteLine("Entra: ");
+            //Console.WriteLine("Entra: ");
             for (int cont2 = 0; cont2 < entradas.Length; cont2++) Console.Write("{0:F4}; ", entradas[cont2]);
             for (int i = 0; i < Neuronas.Count; i++)
             {
@@ -45,15 +45,15 @@ namespace Utilidades
                 Salidas[i] = Neuronas[i].CalcularSalida(entradas,
                     FuncionActivacion, simulacion);
             }
-            Console.WriteLine(" ");
-            Console.WriteLine("Sale: ");
-            for (int cont2 = 0; cont2 < Salidas.Length; cont2++)
-            {
-                Console.Write("Neurona " +cont2+": ");
-                Console.Write("{0:F4}; ", Salidas[cont2]);
-                Console.WriteLine("\n");
-            }
-            Console.WriteLine(" ");
+            //Console.WriteLine(" ");
+            //Console.WriteLine("Sale: ");
+            //for (int cont2 = 0; cont2 < Salidas.Length; cont2++)
+            //{
+            //    Console.Write("Neurona " +cont2+": ");
+            //    Console.Write("{0:F4}; ", Salidas[cont2]);
+            //    Console.WriteLine("\n");
+            //}
+            //Console.WriteLine(" ");
         }   
         public void ModificarPesos(double[] entradas, double rataAprendizaje,
             double errorPatron = 0, double rataDinamica = 0,int BackPropagation=0)

@@ -83,7 +83,7 @@ namespace RedesNeuronales
                          * RedNeuronal.MayoresSalidas[j]));
                     RemoverPuntos(j);
                 }
-            }            
+            }
             Thread.Sleep(VelocidadCharts);
         }
 
@@ -271,7 +271,7 @@ namespace RedesNeuronales
                 }
                 RedNeuronal.ParametrosEntrenaiento(Convert.ToDouble(
                     nudErrorMaximo.Value), Convert.ToDouble(
-                        this.nudRataAprendizaje.Value), Convert.ToInt16(
+                        this.nudRataAprendizaje.Value), Convert.ToInt32(
                      nudNoIteraciones.Value), activaciones, Convert.ToDouble(NudRataDinamica.Value));
                 redInicializada = true;
                 txtLog.Text += "Red Inicalizada con exito\n";
@@ -410,7 +410,7 @@ namespace RedesNeuronales
             {
                 FitRedReuronal();                
                 Invoke(new CallGuardarTopologia( GuardarTopologia));
-                RedNeuronal.IteracionesEntrenamiento = 0;
+                //RedNeuronal.IteracionesEntrenamiento = 0;
                 
             }
             
@@ -419,7 +419,7 @@ namespace RedesNeuronales
         private delegate void CallLlenarLabels();
         private void LlenarLabels()
         {
-            lblError.Text = "Error Entrenamiento: " + Math.Round( RedNeuronal.ErrorEntrenamiento,9);
+            lblError.Text = "E.E: " + RedNeuronal.ErrorEntrenamiento;
             lblIteracion.Text = "Iteracion: " + RedNeuronal.IteracionesEntrenamiento;
         }
         private void FitRedReuronal()
@@ -517,7 +517,7 @@ namespace RedesNeuronales
                             nudRataAprendizaje.Value = Convert.ToDecimal(RedNeuronal.RataAprendizaje);
                             nudNumeroCapas.Value = Convert.ToDecimal(RedNeuronal.Capas.Count);
                             lblIteracion.Text = "Iteracion: " + RedNeuronal.IteracionesEntrenamiento;
-                            lblError.Text = "Error Entrenamiento: " + Math.Round( RedNeuronal.ErrorEntrenamiento,9);
+                            lblError.Text = "Error Entrenamiento: " + RedNeuronal.ErrorEntrenamiento;
                             ReadOnlyDgvTopologia(true);
                             MessageBox.Show("¡Pesos y umbrales cargados con exito!\nProceda a " +
                                 "configurar los parametros de entrenamiento y pulse Inicializar", "Informacion",

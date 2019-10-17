@@ -49,7 +49,7 @@ namespace Utilidades
             this.ErrorMaximo = errorMaximo;
             this.RataAprendizaje = rataAprendizaje;
             this.IteracionesRequeridas = iteracionesRequeridas;
-            this.IteracionesEntrenamiento = 0;
+            //this.IteracionesEntrenamiento = 0;
             this.RataDinamica = rataDinamica;            
             for (int i = 0; i < funcionActivacion.Length; i++)
             {
@@ -110,7 +110,7 @@ namespace Utilidades
         {
             Entrenando = true;
             IteracionesEntrenamiento += 1;
-            Console.WriteLine("Iteracion: " + IteracionesEntrenamiento);
+            //Console.WriteLine("Iteracion: " + IteracionesEntrenamiento);
             ErrorEntrenamiento = 0;
             for (int i = 0; i < Patrones; i++)
             {
@@ -119,7 +119,7 @@ namespace Utilidades
                 errorPorPatron = GetErrorPatron(RecorrerCapas(patronDeEntrenamiento), i);
                 //variacionRealDeseada[i] = Capas[ultimaCapa].Salidas[i];
                 errorPorPatron /= CantidadSalidas;
-                Console.WriteLine("Error Por Patron: " + errorPorPatron);
+                //Console.WriteLine("Error Por Patron: " + errorPorPatron);
                 ErrorEntrenamiento += errorPorPatron;
                 if (AlgoritmoEntrenamiento == 1)
                 {
@@ -130,7 +130,7 @@ namespace Utilidades
             ErrorEntrenamiento /= Patrones;
             RataDinamica /= IteracionesEntrenamiento;
             //for(int i = 0;i < patrones; i++)
-            Console.WriteLine("Error de Entrenamiento: " + ErrorEntrenamiento);
+            //Console.WriteLine("Error de Entrenamiento: " + ErrorEntrenamiento);
             //Prueba con error Entrenamiento
             if (ErrorEntrenamiento < ErrorMaximo)
                 Entrenando = false;
@@ -138,11 +138,11 @@ namespace Utilidades
 
         private double[] RecorrerCapas(double[] patronDeEntrenamiento, int simulacion = 0)
         {
-            Console.WriteLine("============================ Capa 0 ============================ ");
+            //Console.WriteLine("============================ Capa 0 ============================ ");
             Capas[0].CalculaCapa(patronDeEntrenamiento,simulacion);
             for (int j = 1; j < Capas.Count; j++)
             {
-                Console.WriteLine("============================ Capa " + (j).ToString() + " ============================ ");
+                //Console.WriteLine("============================ Capa " + (j).ToString() + " ============================ ");
                 Capas[j].CalculaCapa(Capas[j - 1].Salidas, simulacion);
             }
             return Capas[Capas.Count-1].Salidas;
@@ -155,7 +155,7 @@ namespace Utilidades
             {
                 ErroresLinealUltimaCapa[i] = -salidasDeCapa[i] + SalidasDeseadas[indicePatron, i];
                 SalidasReales[indicePatron, i] = salidasDeCapa[i];
-                Console.WriteLine("Error Lienal[" + i + "]: " + ErroresLinealUltimaCapa[i]);
+                //Console.WriteLine("Error Lienal[" + i + "]: " + ErroresLinealUltimaCapa[i]);
                 errorPatron += Math.Abs(ErroresLinealUltimaCapa[i]);
             }
             Capas[Capas.Count - 1].ErroresLineales = ErroresLinealUltimaCapa;
